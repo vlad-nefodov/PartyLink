@@ -1,0 +1,27 @@
+{
+  "ErrorMessages": {
+    "NotFoundUserWithSpecifiedId": "The user with the specified Id was not found",
+    "NotFoundUserWithSpecifiedRefreshTokenHash": "The user with specified token is not authorized",
+    "EmailAlreadyInUse": "Email already in use",
+    "MobilePhoneAlreadyInUse": "Mobile phone already in use",
+    "PasswordAlreadyInUse": "Password already in use",
+    "InvalidPasswordHash": "The password hash does not match the password",
+    "InvalidLogin": "Invalid login",
+    "InvalidRefreshToken": "Invalid refresh token",
+    "InvalidAttribute": {
+      "RequiredField": "Is required",
+      "MinFieldLength": "Length must be greater than or equal to {0} characters",
+      "MaxFieldLength": "Length must be greater than or equal to {0} characters",
+      "ContainsCharacters": "Must contains the characters",
+      "ContainsNumbers": "Must contain the numbers",
+      "WithoutSpaces": "Must not contain the spaces",
+      "NameFormat": "Must be in format 'Username'",
+      "SurnameFormat": "Must be in format 'Surname'",
+      "GenderFormat": "Must be a value of 0, 1 or 2",
+      "EmailFormat": "Must be in email format",
+      "MobilePhoneFormat": "Must be in mobile phone format",
+      "LoginFormat": "Must be in email or mobile phone format",
+      "HashFormat": "Must be in hash format {0} characters long"
+    }
+  }
+}
