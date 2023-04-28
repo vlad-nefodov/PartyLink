@@ -50,7 +50,7 @@ public class AuthController : ControllerBase
         }
         catch (InvalidPasswordHashException)
         {
-            ModelState.AddModelError(nameof(dataModel.Login), _errorMessagesManager.InvalidPasswordHash());
+            ModelState.AddModelError(nameof(dataModel.PasswordHash), _errorMessagesManager.InvalidPasswordHash());
             return StatusCode(StatusCodes.Status401Unauthorized, ModelState);
         }
         catch

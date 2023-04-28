@@ -6,9 +6,13 @@ public static class MiddlewareExtensions
     {
         app.UseSwagger()
             .UseSwaggerUIConfig()
+            .UseCors(b =>
+            {
+                b.AllowAnyOrigin();
+                b.AllowAnyHeader();
+            })
             .UseAuthentication()
-            .UseAuthorization()
-            .UseCors(b => b.AllowAnyOrigin());
+            .UseAuthorization();
         return app;
     }
 
