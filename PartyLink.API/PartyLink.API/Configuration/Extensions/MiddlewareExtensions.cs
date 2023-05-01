@@ -6,11 +6,7 @@ public static class MiddlewareExtensions
     {
         app.UseSwagger()
             .UseSwaggerUIConfig()
-            .UseCors(b =>
-            {
-                b.AllowAnyOrigin();
-                b.AllowAnyHeader();
-            })
+            .UseCorsConfig()
             .UseAuthentication()
             .UseAuthorization();
         return app;
@@ -23,6 +19,16 @@ public static class MiddlewareExtensions
             cfg.RoutePrefix = string.Empty;
             cfg.DocumentTitle = "Documentation";
             cfg.SwaggerEndpoint("swagger/v1/swagger.json", "PartyLink.API");
+        });
+    }
+
+    private static IApplicationBuilder UseCorsConfig(this IApplicationBuilder app)
+    {
+        return app.UseCors(b =>
+        {
+            b.AllowAnyOrigin();
+            b.AllowAnyHeader();
+            b.WithExposedHeaders("WWW-Authenticate");
         });
     }
 }
