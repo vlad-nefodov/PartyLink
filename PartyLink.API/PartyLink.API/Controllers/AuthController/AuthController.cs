@@ -32,7 +32,8 @@ public class AuthController : ControllerBase
     ///     Get access token + refresh token
     /// </summary>
     [HttpPost("login")]
-    public async Task<IActionResult> LoginAsync(LoginDataModel dataModel, CancellationToken cancellationToken = default)
+    public async Task<IActionResult> LoginAsync([FromBody] LoginDataModel dataModel,
+        CancellationToken cancellationToken = default)
     {
         try
         {
@@ -96,7 +97,7 @@ public class AuthController : ControllerBase
     ///     Refresh access token with refresh token
     /// </summary>
     [HttpPost("refresh")]
-    public async Task<IActionResult> RefreshAccessTokenAsync([FromBody] RefreshAccessTokenDataModel dataModel,
+    public async Task<IActionResult> RefreshTokensAsync([FromBody] RefreshTokensDataModel dataModel,
         CancellationToken cancellationToken = default)
     {
         try

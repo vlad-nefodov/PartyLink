@@ -2,7 +2,7 @@
 
 namespace PartyLink.API.Controllers.AuthController.Models.DataModels;
 
-public class RefreshAccessTokenDataModel
+public class RefreshTokensDataModel
 {
     [RequiredField] public string RefreshToken { get; set; } = null!;
 }
