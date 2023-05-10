@@ -27,6 +27,7 @@ public static class MiddlewareExtensions
         return app.UseCors(b =>
         {
             b.AllowAnyOrigin();
+            b.AllowAnyMethod();
             b.AllowAnyHeader();
             b.WithExposedHeaders("WWW-Authenticate");
         });
