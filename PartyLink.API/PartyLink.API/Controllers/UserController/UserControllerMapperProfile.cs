@@ -16,6 +16,7 @@ public class UserControllerMapperProfile : Profile
 
         // GetById
         CreateMap<User, GetUserByIdResultModel>();
+        CreateMap<Avatar, AvatarResultModel>();
 
         // Create
         CreateMap<CreateUserDataModel, CreateUserData>();
@@ -24,6 +25,10 @@ public class UserControllerMapperProfile : Profile
         // UpdateById
         CreateMap<UpdateUserDataModel, UpdateUserData>();
         CreateMap<User, UpdateUserByIdResultModel>();
+
+        // UploadAvatarById
+        CreateMap<AvatarDataModel, Avatar>();
+        CreateMap<User, UploadUserAvatarByIdResultModel>();
 
         // UpdateEmailById
         CreateMap<UpdateUserEmailDataModel, UpdateUserEmailData>();

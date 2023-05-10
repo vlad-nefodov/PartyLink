@@ -5,7 +5,7 @@ namespace PartyLink.Domain.Extensions;
 
 public static class TableConfigurationExtensions
 {
-    public static void ConfigureUserTable(this ModelBuilder modelBuilder)
+    public static void ConfigureUsersTable(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<User>().ToTable(t => t.IsTemporal());
 
@@ -21,12 +21,23 @@ public static class TableConfigurationExtensions
         modelBuilder.Entity<User>().HasIndex(u => u.PasswordHash).IsUnique();
 
         modelBuilder.Entity<User>()
+            .HasOne(u => u.Avatar)
+            .WithOne(a => a.User)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<User>()
             .HasOne(u => u.RefreshToken)
             .WithOne(rt => rt.User)
             .OnDelete(DeleteBehavior.Cascade);
     }
 
-    public static void ConfigureRefreshTokensTable(this ModelBuilder modelBuilder)
+    public static void ConfigureUsersAvatarsTable(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Avatar>().ToTable(t => t.IsTemporal());
+        modelBuilder.Entity<Avatar>().HasKey(a => a.UserId);
+    }
+
+    public static void ConfigureUsersRefreshTokensTable(this ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<RefreshToken>().ToTable(t => t.IsTemporal());
 

@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PartyLink.API.Configuration.Managers.Interfaces;
 using PartyLink.API.Controllers.UserController.Models.DataModels;
 using PartyLink.API.Controllers.UserController.Models.ResultModels;
+using PartyLink.Domain.Entities;
 using PartyLink.Services.Exceptions;
 using PartyLink.Services.Interfaces;
 using PartyLink.Services.UserService.Dto;
@@ -121,6 +123,31 @@ public class UserController : ControllerBase
             var updatedUser = await _userService.UpdateByIdAsync(id, updateUserData, cancellationToken);
             var result = _mapper.Map<UpdateUserByIdResultModel>(updatedUser);
 
+            return StatusCode(StatusCodes.Status200OK, result);
+        }
+        catch (NotFoundUserWithSpecifiedIdException)
+        {
+            ModelState.AddModelError(nameof(id), _errorMessagesManager.NotFoundUserWithSpecifiedId());
+            return StatusCode(StatusCodes.Status404NotFound, ModelState);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    /// <summary>
+    ///     Upload user avatar by user id
+    /// </summary>
+    [Authorize]
+    [HttpPut("{id:guid}/avatar")]
+    public async Task<IActionResult> UploadAvatarByIdAsync(Guid id, [FromBody] AvatarDataModel dataModel,
+        CancellationToken cancellationToken)
+    {
+        try
+        {
+            var updatedUser = await _userService.UploadAvatarByIdAsync(id, dataModel.Base64Image, cancellationToken);
+            var result = _mapper.Map<UploadUserAvatarByIdResultModel>(updatedUser);
             return StatusCode(StatusCodes.Status200OK, result);
         }
         catch (NotFoundUserWithSpecifiedIdException)

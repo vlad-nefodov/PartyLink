@@ -186,6 +186,25 @@ public class UserService : IUserService
         return deletedUser;
     }
 
+    public async Task<User> UploadAvatarByIdAsync(Guid id, string base64Image,
+        CancellationToken cancellationToken = default)
+    {
+        if (base64Image == null) throw new ArgumentNullException(nameof(base64Image));
+
+        // Get user to update
+        var userToUpdate = await _userRepository.GetByIdAsync(id, cancellationToken) ??
+                           throw new NotFoundUserWithSpecifiedIdException(id);
+        // Upload avatar
+        userToUpdate.Avatar = new Avatar {Base64Image = base64Image};
+        var updatedUser = _userRepository.Update(userToUpdate);
+
+        // Save changes and Detach
+        await _userRepository.SaveAsync(cancellationToken);
+        _userRepository.Detach(updatedUser);
+
+        return updatedUser;
+    }
+
     private async Task<bool> IsEmailAlreadyInUseAsync(string email,
         CancellationToken cancellationToken = default)
     {

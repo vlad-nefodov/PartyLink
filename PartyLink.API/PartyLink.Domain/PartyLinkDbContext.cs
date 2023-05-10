@@ -11,12 +11,14 @@ public sealed class PartyLinkDbContext : DbContext
         Database.EnsureCreated();
     }
 
-    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+    public DbSet<RefreshToken> UsersRefreshTokens { get; set; } = null!;
+    public DbSet<Avatar> UsersAvatars { get; set; } = null!;
     public DbSet<User> Users { get; set; } = null!;
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ConfigureRefreshTokensTable();
-        modelBuilder.ConfigureUserTable();
+        modelBuilder.ConfigureUsersRefreshTokensTable();
+        modelBuilder.ConfigureUsersAvatarsTable();
+        modelBuilder.ConfigureUsersTable();
     }
 }

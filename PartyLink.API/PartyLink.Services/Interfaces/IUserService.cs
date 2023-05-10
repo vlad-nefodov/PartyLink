@@ -13,6 +13,8 @@ public interface IUserService
 
     public Task<User> UpdateByIdAsync(Guid id, UpdateUserData data, CancellationToken cancellationToken = default);
 
+    public Task<User> UploadAvatarByIdAsync(Guid id, string base64Image, CancellationToken cancellationToken = default);
+
     public Task<User> UpdateEmailByIdAsync(Guid id, UpdateUserEmailData data,
         CancellationToken cancellationToken = default);
 
