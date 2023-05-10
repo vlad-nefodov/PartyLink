@@ -1,0 +1,42 @@
+@import "bootstrap/scss/bootstrap";
+@import "react-toastify/dist/ReactToastify.css";
+
+html,
+body,
+#root {
+  height: 100%;
+  overflow: auto;
+}
+
+.container-center {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.Toastify__toast {
+  --toastify-color-error: #F8D7DA;
+  --toastify-text-color-error: #842029;
+  --toastify-color-success: #D1E7DD;
+  --toastify-text-color-success: #0F5132;
+}
+
+.Toastify__progress-bar-theme--colored.Toastify__progress-bar--success {
+  background-color: #0f51328c;
+}
+
+.Toastify__close-button--colored {
+  color: #00000070;
+}
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.form-controls-separator {
+  background-color: #7070702c;
+  height: 1px;
+  margin-top: 10px;
+  border-radius: 1px;
+}

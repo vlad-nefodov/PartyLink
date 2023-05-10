@@ -1,0 +1,7 @@
+$navbar-height: 56px;
+$page-height-without-header: calc(100vh - $navbar-height);
+
+.auth-layout-container {
+  height: $page-height-without-header;
+  overflow: auto;
+}
