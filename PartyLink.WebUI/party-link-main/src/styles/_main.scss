@@ -4,8 +4,9 @@
 html,
 body,
 #root {
-  height: 100%;
-  overflow: auto;
+  height: 100vh;
+  background-color: #F7F8FA;
+  overflow-x: hidden;
 }
 
 .container-center {

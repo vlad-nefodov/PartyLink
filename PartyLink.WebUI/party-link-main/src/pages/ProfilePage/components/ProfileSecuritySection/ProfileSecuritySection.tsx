@@ -1,4 +1,3 @@
-import './ProfileSecuritySection.scss'
 import { FaShieldAlt } from "react-icons/fa";
 import { FC } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';

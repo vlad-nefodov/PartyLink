@@ -1,4 +1,3 @@
-import './ProfileInfoSection.scss'
 import { FaRegIdCard } from "react-icons/fa";
 import { FC, useState, useEffect, ChangeEvent } from 'react';
 import { Form, FloatingLabel, Button, Container, Row, Col } from 'react-bootstrap';

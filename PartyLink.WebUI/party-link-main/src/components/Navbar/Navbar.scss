@@ -1,5 +1,6 @@
 .navbar-custom {
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  z-index: 1;
 }
 
 .navbar-custom-brand {
@@ -11,7 +12,29 @@
   width: 40px;
 }
 
+.navbar-custom-icon {
+  color: #9EAFB8;
+}
+
+.navbar-custom-icon:hover {
+  color: #475C66;
+  cursor: pointer;
+}
+
+.navbar-dropdown-item {
+  color: #677278;
+
+  &:hover {
+    color: #475C66;
+
+    .navbar-dropdown-item-icon {
+      color: #475C66;
+    }
+  }
+}
+
 .navbar-dropdown-item-icon {
+  @extend .navbar-custom-icon;
   margin-bottom: 2px;
   margin-right: 10px;
 }

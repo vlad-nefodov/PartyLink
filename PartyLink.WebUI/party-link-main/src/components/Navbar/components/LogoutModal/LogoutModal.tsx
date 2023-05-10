@@ -10,15 +10,15 @@ export interface ILogoutModalProps {
 
 const LogoutModal: FC<ILogoutModalProps> = ({ show, onCancel, onSubmit }) => {
   return (
-    <Modal className='logout-modal' show={show} onHide={onCancel}>
+    <Modal className='logout-modal' size='sm' show={show} onHide={onCancel}>
       <Modal.Body>
-        <Modal.Title>Do you really want to leave?</Modal.Title>
+        Do you really want to leave?
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-secondary" onClick={onCancel}>
+        <Button variant="outline-secondary" size='sm' onClick={onCancel}>
           Cancel
         </Button>
-        <Button variant="primary" onClick={onSubmit}>
+        <Button variant="primary" size='sm' onClick={onSubmit}>
           Leave
         </Button>
       </Modal.Footer>

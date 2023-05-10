@@ -1,4 +1,4 @@
-import './Signup.scss';
+import './SignupForm.scss';
 import { FC, useState, ChangeEvent } from 'react';
 import { Container, Form, Button, FloatingLabel, Spinner } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
