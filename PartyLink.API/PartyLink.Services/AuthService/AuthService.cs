@@ -59,7 +59,8 @@ public class AuthService : IAuthService
         if (user == null) throw new InvalidLoginException(data.Login);
 
         // Compare password hashes
-        if (user.PasswordHash != data.PasswordHash.ToUpper()) throw new InvalidPasswordHashException(data.PasswordHash);
+        if (user.PasswordHash.ToUpper() != data.PasswordHash.ToUpper())
+            throw new InvalidPasswordHashException(data.PasswordHash);
 
         return await CreateNewTokensAsync(user, accessTokenDescriptor, refreshTokenDescriptor, cancellationToken);
     }

@@ -95,7 +95,8 @@ public class UserService : IUserService
                            throw new NotFoundUserWithSpecifiedIdException(id);
 
         // Compare password hashes
-        if (userToUpdate.PasswordHash != data.PasswordHash) throw new InvalidPasswordHashException(data.PasswordHash);
+        if (userToUpdate.PasswordHash.ToUpper() != data.PasswordHash.ToUpper())
+            throw new InvalidPasswordHashException(data.PasswordHash);
         if (await IsEmailAlreadyInUseAsync(data.NewEmail, cancellationToken))
             throw new EmailAlreadyInUseException(data.NewEmail);
 
@@ -120,7 +121,8 @@ public class UserService : IUserService
                            throw new NotFoundUserWithSpecifiedIdException(id);
 
         // Compare password hashes
-        if (userToUpdate.PasswordHash != data.PasswordHash) throw new InvalidPasswordHashException(data.PasswordHash);
+        if (userToUpdate.PasswordHash.ToUpper() != data.PasswordHash.ToUpper())
+            throw new InvalidPasswordHashException(data.PasswordHash);
         if (await IsMobilePhoneAlreadyInUseAsync(data.NewMobilePhone, cancellationToken))
             throw new MobilePhoneAlreadyInUseException(data.NewMobilePhone);
 
@@ -145,7 +147,8 @@ public class UserService : IUserService
                            throw new NotFoundUserWithSpecifiedIdException(id);
 
         // Compare password hashes
-        if (userToUpdate.PasswordHash != data.PasswordHash) throw new InvalidPasswordHashException(data.PasswordHash);
+        if (userToUpdate.PasswordHash.ToUpper() != data.PasswordHash.ToUpper())
+            throw new InvalidPasswordHashException(data.PasswordHash);
 
         // Create password hash
         var passwordHash = await _hashHelper.GetHashFromAsync(data.NewPassword, cancellationToken);
@@ -170,7 +173,8 @@ public class UserService : IUserService
                            throw new NotFoundUserWithSpecifiedIdException(id);
 
         // Compare password hashes
-        if (userToDelete.PasswordHash != data.PasswordHash) throw new InvalidPasswordHashException(data.PasswordHash);
+        if (userToDelete.PasswordHash.ToUpper() != data.PasswordHash.ToUpper())
+            throw new InvalidPasswordHashException(data.PasswordHash);
 
         // Delete user
         var deletedUser = _userRepository.Remove(userToDelete);
