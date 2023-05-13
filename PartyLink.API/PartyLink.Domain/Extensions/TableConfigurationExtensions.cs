@@ -45,4 +45,63 @@ public static class TableConfigurationExtensions
         modelBuilder.Entity<RefreshToken>().Property(rt => rt.Hash).HasMaxLength(64);
         modelBuilder.Entity<RefreshToken>().HasIndex(rt => rt.Hash).IsUnique();
     }
+
+    public static void ConfigureEventsTable(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Event>().ToTable(t =>
+        {
+            t.IsTemporal();
+            t.HasCheckConstraint($"CK_Events_{nameof(Event.EndsAt)}",
+                $"{nameof(Event.EndsAt)} > {nameof(Event.StartsAt)}");
+        });
+
+        modelBuilder.Entity<Event>().Property(e => e.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<Event>().Property(e => e.Title).HasMaxLength(80);
+        modelBuilder.Entity<Event>().Property(e => e.Description).HasMaxLength(200);
+
+        modelBuilder.Entity<Event>().HasIndex(e => new {e.Title, e.Description}).IsUnique();
+
+        modelBuilder.Entity<Event>()
+            .HasOne(e => e.Location)
+            .WithOne(el => el.Event)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
+
+    public static void ConfigureEventsLocationsTable(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<EventLocation>().ToTable(t =>
+        {
+            t.IsTemporal();
+            t.HasCheckConstraint($"CK_EventsLocations_{nameof(EventLocation.Latitude)}",
+                $"{nameof(EventLocation.Latitude)} >= -90 AND {nameof(EventLocation.Latitude)} <= 90");
+            t.HasCheckConstraint($"CK_EventsLocations_{nameof(EventLocation.Longitude)}",
+                $"{nameof(EventLocation.Longitude)} >= -180 AND {nameof(EventLocation.Longitude)} <= 180");
+        });
+        modelBuilder.Entity<EventLocation>().HasKey(el => el.EventId);
+    }
+
+    public static void ConfigureEventTagsTable(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<EventTag>().ToTable(t => t.IsTemporal());
+
+        modelBuilder.Entity<EventTag>().Property(e => e.Id).ValueGeneratedOnAdd();
+        modelBuilder.Entity<EventTag>().Property(et => et.Title).HasMaxLength(30);
+    }
+
+    public static void ConfigureEventsUsersTable(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<EventUser>().ToTable(t => t.IsTemporal());
+
+        modelBuilder.Entity<EventUser>().HasKey(eu => new {eu.EventId, eu.UserId});
+
+        modelBuilder.Entity<EventUser>()
+            .HasOne(eu => eu.Event)
+            .WithMany(e => e.Users)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<EventUser>()
+            .HasOne(eu => eu.User)
+            .WithMany(u => u.Events)
+            .OnDelete(DeleteBehavior.Cascade);
+    }
 }

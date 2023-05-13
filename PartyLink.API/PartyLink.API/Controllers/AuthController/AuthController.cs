@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using PartyLink.API.Configuration.Managers.Interfaces;
 using PartyLink.API.Controllers.AuthController.Models.DataModels;
-using PartyLink.Services.AuthService.Dto;
-using PartyLink.Services.AuthService.Exceptions;
 using PartyLink.Services.Exceptions;
-using PartyLink.Services.Interfaces;
+using PartyLink.Services.Services.AuthService.Dto;
+using PartyLink.Services.Services.AuthService.Exceptions;
+using PartyLink.Services.Services.Interfaces;
 
 namespace PartyLink.API.Controllers.AuthController;
 

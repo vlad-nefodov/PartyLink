@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using PartyLink.API.Controllers.AuthController.Models.DataModels;
-using PartyLink.Services.AuthService.Dto;
+using PartyLink.Services.Services.AuthService.Dto;
 
 namespace PartyLink.API.Controllers.AuthController;
 

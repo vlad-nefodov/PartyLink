@@ -4,15 +4,18 @@ using Microsoft.EntityFrameworkCore;
 using PartyLink.API.Configuration.Managers;
 using PartyLink.API.Configuration.Managers.Interfaces;
 using PartyLink.API.Controllers.AuthController;
+using PartyLink.API.Controllers.EventController;
 using PartyLink.API.Controllers.UserController;
+using PartyLink.API.Models;
 using PartyLink.Domain;
 using PartyLink.Repositories;
 using PartyLink.Repositories.Interfaces;
-using PartyLink.Services.AuthService;
 using PartyLink.Services.Helpers.Interfaces;
 using PartyLink.Services.Helpers.Sha256HashHelper;
-using PartyLink.Services.Interfaces;
-using PartyLink.Services.UserService;
+using PartyLink.Services.Services.AuthService;
+using PartyLink.Services.Services.EventService;
+using PartyLink.Services.Services.Interfaces;
+using PartyLink.Services.Services.UserService;
 
 namespace PartyLink.API.Configuration.Extensions;
 
@@ -26,8 +29,10 @@ public static class ServicesExtensions
             .AddDbContext<PartyLinkDbContext>(opts => opts.UseSqlServer(builder.Configuration.GetDbConnectionString()))
             .AddScoped<IHashHelper, Sha256HashHelper>()
             .AddScoped<IUserRepository, UserRepository>()
+            .AddScoped<IEventRepository, EventRepository>()
             .AddScoped<IUserService, UserService>()
             .AddScoped<IAuthService, AuthService>()
+            .AddScoped<IEventService, EventService>()
             .AddMapper()
             .AddSwaggerGen()
             .AddJwtAuthentication(TokenDescriptorManager.Instance)
@@ -63,9 +68,12 @@ public static class ServicesExtensions
     {
         return services.AddAutoMapper(cfg =>
         {
+            cfg.AddProfile<CommonMapperProfile>();
             cfg.AddProfile<UserControllerMapperProfile>();
             cfg.AddProfile<AuthControllerMapperProfile>();
+            cfg.AddProfile<EventControllerMapperProfile>();
             cfg.AddProfile<UserServiceMapperProfile>();
+            cfg.AddProfile<EventServiceMapperProfile>();
         });
     }
 }

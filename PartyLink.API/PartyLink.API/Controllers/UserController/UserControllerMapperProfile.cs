@@ -1,9 +1,8 @@
 ﻿using AutoMapper;
-using PartyLink.API.Controllers.AuthController.Models.DataModels;
 using PartyLink.API.Controllers.UserController.Models.DataModels;
 using PartyLink.API.Controllers.UserController.Models.ResultModels;
 using PartyLink.Domain.Entities;
-using PartyLink.Services.UserService.Dto;
+using PartyLink.Services.Services.UserService.Dto;
 
 namespace PartyLink.API.Controllers.UserController;
 
@@ -16,7 +15,6 @@ public class UserControllerMapperProfile : Profile
 
         // GetById
         CreateMap<User, GetUserByIdResultModel>();
-        CreateMap<Avatar, AvatarResultModel>();
 
         // Create
         CreateMap<CreateUserDataModel, CreateUserData>();

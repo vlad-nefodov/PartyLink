@@ -21,25 +21,6 @@ public class UserRepository : RepositoryBase<User>, IUserRepository
             .AsQueryable();
     }
 
-    public override void Detach(User entity)
-    {
-        var entry = _dbContext.Entry(entity);
-        entry.Reference(u => u.Avatar).EntityEntry.State = EntityState.Detached;
-        entry.Reference(u => u.RefreshToken).EntityEntry.State = EntityState.Detached;
-        entry.State = EntityState.Detached;
-    }
-
-    public override void DetachAll(IEnumerable<User> entities)
-    {
-        foreach (var entity in entities)
-        {
-            var entry = _dbContext.Entry(entity);
-            entry.Reference(u => u.Avatar).EntityEntry.State = EntityState.Detached;
-            entry.Reference(u => u.RefreshToken).EntityEntry.State = EntityState.Detached;
-            entry.State = EntityState.Detached;
-        }
-    }
-
     public override async Task<User?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _dbContext.Set<User>()

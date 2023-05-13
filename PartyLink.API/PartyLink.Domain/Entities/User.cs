@@ -11,6 +11,8 @@ public class User : EntityBase
     public string Email { get; set; } = null!;
     public string MobilePhone { get; set; } = null!;
     public string PasswordHash { get; set; } = null!;
+
     public Avatar? Avatar { get; set; }
     public RefreshToken? RefreshToken { get; set; }
+    public ICollection<EventUser> Events { get; set; } = new List<EventUser>();
 }

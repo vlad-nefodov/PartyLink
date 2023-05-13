@@ -1,4 +1,5 @@
 ﻿using PartyLink.API.Configuration.Managers.Interfaces;
+using PartyLink.Domain.Entities.Enums;
 
 namespace PartyLink.API.Configuration.Managers;
 
@@ -64,6 +65,31 @@ public sealed class ErrorMessagesManager : IErrorMessagesManager
         return string.Format(_configuration[$"{_messagesPath}{nameof(InvalidRefreshToken)}"]!);
     }
 
+    public string NotFoundEventWithSpecifiedId()
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(NotFoundEventWithSpecifiedId)}"]!);
+    }
+
+    public string TitleWithDescriptionAlreadyInUse()
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(TitleWithDescriptionAlreadyInUse)}"]!);
+    }
+
+    public string StartDateLessThanCurrentDate()
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(StartDateLessThanCurrentDate)}"]!);
+    }
+
+    public string InvalidEventDuration(int minMinutesDuration)
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(InvalidEventDuration)}"]!, minMinutesDuration);
+    }
+
+    public string NotEnoughEventAuthority(EventUserRole requiredRole)
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(NotEnoughEventAuthority)}"]!, requiredRole);
+    }
+
     public string InvalidAttributeRequiredField()
     {
         return string.Format(_configuration[$"{_invalidAttributePath}RequiredField"]!);
@@ -77,6 +103,11 @@ public sealed class ErrorMessagesManager : IErrorMessagesManager
     public string InvalidAttributeMaxFieldLength(int length)
     {
         return string.Format(_configuration[$"{_invalidAttributePath}MaxFieldLength"]!, length);
+    }
+
+    public string InvalidAttributeMaxCollectionCount(int maxCount)
+    {
+        return string.Format(_configuration[$"{_invalidAttributePath}MaxCollectionCount"]!, maxCount);
     }
 
     public string InvalidAttributeContainsCharacters()
@@ -127,6 +158,16 @@ public sealed class ErrorMessagesManager : IErrorMessagesManager
     public string InvalidAttributeHashFormat(int length)
     {
         return string.Format(_configuration[$"{_invalidAttributePath}HashFormat"]!, length);
+    }
+
+    public string InvalidAttributeLatitudeFormat()
+    {
+        return string.Format(_configuration[$"{_invalidAttributePath}LatitudeFormat"]!);
+    }
+
+    public string InvalidAttributeLongitudeFormat()
+    {
+        return string.Format(_configuration[$"{_invalidAttributePath}LongitudeFormat"]!);
     }
 
     public static ConfigurationManager Configure(ConfigurationManager configuration)

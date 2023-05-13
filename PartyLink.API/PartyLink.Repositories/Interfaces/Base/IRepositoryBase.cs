@@ -14,12 +14,12 @@ public interface IRepositoryBase<TEntity> where TEntity : EntityBase
     /// <summary>
     ///     Detaches an entity from the DataBase context can be useful after using Save or SaveAsync.
     /// </summary>
-    public void Detach(TEntity entity);
+    public void Detach(object entity);
 
     /// <summary>
     ///     Detaches entities from the DataBase context can be useful after using Save or SaveAsync.
     /// </summary>
-    public void DetachAll(IEnumerable<TEntity> entities);
+    public void DetachAll(IEnumerable<object> entities);
 
     public Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
 

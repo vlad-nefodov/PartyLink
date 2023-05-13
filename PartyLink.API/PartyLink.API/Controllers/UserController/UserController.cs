@@ -1,15 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using PartyLink.API.Configuration.Managers.Interfaces;
 using PartyLink.API.Controllers.UserController.Models.DataModels;
 using PartyLink.API.Controllers.UserController.Models.ResultModels;
-using PartyLink.Domain.Entities;
 using PartyLink.Services.Exceptions;
-using PartyLink.Services.Interfaces;
-using PartyLink.Services.UserService.Dto;
-using PartyLink.Services.UserService.Exceptions;
+using PartyLink.Services.Services.EventService.Exceptions;
+using PartyLink.Services.Services.Interfaces;
+using PartyLink.Services.Services.UserService.Dto;
+using PartyLink.Services.Services.UserService.Exceptions;
 
 namespace PartyLink.API.Controllers.UserController;
 
@@ -88,7 +87,7 @@ public class UserController : ControllerBase
 
             return StatusCode(StatusCodes.Status201Created, result);
         }
-        catch (EmailAlreadyInUseException)
+        catch (TitleWithDescriptionAlreadyInUseException)
         {
             ModelState.AddModelError(nameof(dataModel.Email), _errorMessagesManager.EmailAlreadyInUse());
             return StatusCode(StatusCodes.Status409Conflict, ModelState);
@@ -188,7 +187,7 @@ public class UserController : ControllerBase
                 _errorMessagesManager.InvalidPasswordHash());
             return StatusCode(StatusCodes.Status401Unauthorized, ModelState);
         }
-        catch (EmailAlreadyInUseException)
+        catch (TitleWithDescriptionAlreadyInUseException)
         {
             ModelState.AddModelError(nameof(dataModel.NewEmail), _errorMessagesManager.EmailAlreadyInUse());
             return StatusCode(StatusCodes.Status409Conflict, ModelState);

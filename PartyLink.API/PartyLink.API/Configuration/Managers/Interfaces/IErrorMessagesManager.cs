@@ -1,4 +1,6 @@
-﻿namespace PartyLink.API.Configuration.Managers.Interfaces;
+﻿using PartyLink.Domain.Entities.Enums;
+
+namespace PartyLink.API.Configuration.Managers.Interfaces;
 
 public interface IErrorMessagesManager
 {
@@ -10,9 +12,17 @@ public interface IErrorMessagesManager
     public string InvalidPasswordHash();
     public string InvalidLogin();
     public string InvalidRefreshToken();
+
+    public string NotFoundEventWithSpecifiedId();
+    public string TitleWithDescriptionAlreadyInUse();
+    public string StartDateLessThanCurrentDate();
+    public string InvalidEventDuration(int minMinutesDuration);
+    public string NotEnoughEventAuthority(EventUserRole requiredRole);
+
     public string InvalidAttributeRequiredField();
     public string InvalidAttributeMinFieldLength(int length);
     public string InvalidAttributeMaxFieldLength(int length);
+    public string InvalidAttributeMaxCollectionCount(int maxCount);
     public string InvalidAttributeContainsCharacters();
     public string InvalidAttributeContainsNumbers();
     public string InvalidAttributeWithoutSpaces();
@@ -23,4 +33,6 @@ public interface IErrorMessagesManager
     public string InvalidAttributeMobilePhoneFormat();
     public string InvalidAttributeLoginFormat();
     public string InvalidAttributeHashFormat(int length);
+    public string InvalidAttributeLatitudeFormat();
+    public string InvalidAttributeLongitudeFormat();
 }

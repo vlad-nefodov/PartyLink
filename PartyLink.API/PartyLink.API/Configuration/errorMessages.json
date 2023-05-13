@@ -8,10 +8,16 @@
     "InvalidPasswordHash": "The password hash does not match the password",
     "InvalidLogin": "Invalid login",
     "InvalidRefreshToken": "Invalid refresh token",
+    "NotFoundEventWithSpecifiedId": "The event with the specified Id was not found",
+    "TitleWithDescriptionAlreadyInUse": "An event with this Title and Description is already in use",
+    "StartDateLessThanCurrentDate": "The event cannot start later than the current date",
+    "InvalidEventDuration": "The duration of the event cannot be less than {0} minutes",
+    "NotEnoughEventAuthority": "Event user role must be {0}.",
     "InvalidAttribute": {
       "RequiredField": "Is required",
       "MinFieldLength": "Length must be greater than or equal to {0} characters",
-      "MaxFieldLength": "Length must be greater than or equal to {0} characters",
+      "MaxFieldLength": "Length must be less than or equal to {0} characters",
+      "MaxCollectionCount": "Count of items must be less than or equal to {0}",
       "ContainsCharacters": "Must contains the characters",
       "ContainsNumbers": "Must contain the numbers",
       "WithoutSpaces": "Must not contain the spaces",
@@ -21,7 +27,9 @@
       "EmailFormat": "Must be in email format",
       "MobilePhoneFormat": "Must be in mobile phone format",
       "LoginFormat": "Must be in email or mobile phone format",
-      "HashFormat": "Must be in hash format {0} characters long"
+      "HashFormat": "Must be in hash format {0} characters long",
+      "LatitudeFormat": "Must be in latitude format",
+      "LongitudeFormat": "Must be in longitude format"
     }
   }
 }

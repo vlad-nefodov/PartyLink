@@ -1,4 +1,5 @@
-﻿using PartyLink.Domain.Entities.Enums;
+﻿using PartyLink.API.Models.ResultModels;
+using PartyLink.Domain.Entities.Enums;
 
 namespace PartyLink.API.Controllers.UserController.Models.ResultModels;
 
