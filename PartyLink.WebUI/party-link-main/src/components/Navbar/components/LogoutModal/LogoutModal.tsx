@@ -15,10 +15,10 @@ const LogoutModal: FC<ILogoutModalProps> = ({ show, onCancel, onSubmit }) => {
         Do you really want to leave?
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="outline-secondary" size='sm' onClick={onCancel}>
+        <Button variant="outline-secondary" className='ps-3 pe-3' size='sm' onClick={onCancel}>
           Cancel
         </Button>
-        <Button variant="primary" size='sm' onClick={onSubmit}>
+        <Button variant="primary" className='ps-3 pe-3' size='sm' onClick={onSubmit}>
           Leave
         </Button>
       </Modal.Footer>

@@ -47,7 +47,6 @@ function SignupPage() {
       onError: (error) => {
         let message = "Service is not available, try again later.";
         const axiosError = error as AxiosError;
-        console.log(error);
 
         if (axiosError?.response?.status === 409) {
           const data = axiosError?.response?.data;

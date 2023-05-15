@@ -6,6 +6,10 @@ export enum EventUserRole {
   Pending = 2
 }
 
+export interface IIdResponse {
+  id: string
+}
+
 export interface IAvatar {
   base64Image: string
 }
@@ -34,15 +38,42 @@ export interface IEventResponse {
   participantsCount: number,
   title: string,
   description: string,
-  startsAt: string,
-  endsAt: string,
+  startsAt: Date,
+  endsAt: Date,
   location: IEventLocation,
   tags: IEventTag[]
+}
+
+export interface ICreateTagData {
+  title: string
+}
+
+export interface ICreateEventData {
+  title: string,
+  description: string,
+  startsAt: Date,
+  endsAt: Date,
+  location: IEventLocation,
+  tags: ICreateTagData[]
+}
+
+const getLocalDate = (date: Date) => {
+  const timeZoneOffset = date.getTimezoneOffset() * 60000;
+  const localDate = new Date(date.getTime() - timeZoneOffset);
+  return localDate as Date;
 }
 
 export const eventService = {
   getAll: async () => {
     const response = await api.get<IEventResponse[]>("/api/event");
+    return response.data;
+  },
+  create: async (data: ICreateEventData) => {
+    const response = await api.post<IIdResponse>("/api/event", {
+      ...data,
+      startsAt: getLocalDate(data.startsAt),
+      endsAt: getLocalDate(data.endsAt)
+    });
     return response.data;
   }
 }

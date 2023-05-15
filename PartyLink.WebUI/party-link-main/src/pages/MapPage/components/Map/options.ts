@@ -11,10 +11,11 @@ const options: google.maps.MapOptions = {
     },
     strictBounds: true
   },
-  zoom: 6,
+  draggableCursor: "grab",
+  draggingCursor: "grabbing",
   maxZoom: 20,
   minZoom: 4,
-  center: { lat: 49.842957, lng: 24.031111 }
+
 };
 
 export default options;
