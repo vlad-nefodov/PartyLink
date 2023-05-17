@@ -49,7 +49,7 @@ public class EventService : IEventService
         var owner = await _userRepository.GetByIdAsync(ownerId, cancellationToken) ??
                     throw new NotFoundUserWithSpecifiedIdException(ownerId);
 
-        if (await IsTitleWithDescriptionAlreadyInUseAsync(data.Title, data.Description, cancellationToken))
+        if (await IsTitleWithDescriptionAlreadyInUseAsync(data.Title, data.Description, Guid.Empty, cancellationToken))
             throw new TitleWithDescriptionAlreadyInUseException(data.Title, data.Description);
 
         var currentDate = DateTime.Now;
@@ -81,9 +81,6 @@ public class EventService : IEventService
     {
         if (data == null) throw new ArgumentNullException(nameof(data));
 
-        if (await IsTitleWithDescriptionAlreadyInUseAsync(data.Title, data.Description, cancellationToken))
-            throw new TitleWithDescriptionAlreadyInUseException(data.Title, data.Description);
-
         var currentDate = DateTime.Now;
         if (data.StartsAt < currentDate)
             throw new StartDateLessThanCurrentDateException(data.StartsAt, currentDate);
@@ -95,6 +92,10 @@ public class EventService : IEventService
         // Get event to update
         var eventEntityToUpdate = await _eventRepository.GetByIdAsync(id, cancellationToken) ??
                                   throw new NotFoundEventWithSpecifiedIdException(id);
+
+        if (await IsTitleWithDescriptionAlreadyInUseAsync(data.Title, data.Description, eventEntityToUpdate.Id,
+                cancellationToken))
+            throw new TitleWithDescriptionAlreadyInUseException(data.Title, data.Description);
 
         // Credentials check
         if (!IsEventOwner(eventEntityToUpdate, ownerId))
@@ -132,11 +133,13 @@ public class EventService : IEventService
         return deletedEventEntity;
     }
 
-    private async Task<bool> IsTitleWithDescriptionAlreadyInUseAsync(string title, string description,
+    private async Task<bool> IsTitleWithDescriptionAlreadyInUseAsync(string title, string description, Guid eventId,
         CancellationToken cancellationToken = default)
     {
         return await _eventRepository.GetAll()
-            .AnyAsync(e => e.Title == title && e.Description == description, cancellationToken);
+            .AnyAsync(e => e.Id != eventId && 
+                           e.Title == title && 
+                           e.Description == description, cancellationToken);
     }
 
     private static bool IsEventOwner(Event eventEntity, Guid ownerId)
