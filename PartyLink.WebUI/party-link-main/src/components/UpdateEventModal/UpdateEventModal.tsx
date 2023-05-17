@@ -1,9 +1,10 @@
-import './CreateEventModal.scss';
+import './UpdateEventModal.scss';
 import { FC, useState, ChangeEvent } from 'react';
 import { FaFire, FaMapMarkerAlt, FaTags, FaCalendarAlt, FaAlignLeft, FaGlobe, FaPencilAlt, FaArrowRight } from "react-icons/fa";
 import { Modal, Button, Container, Row, Col, FormControl, FormGroup, FormLabel } from "react-bootstrap";
 import { DatePicker, Multiselect } from 'react-widgets/cjs';
-import LoadingContainer from '../../../../components/LoadingContainer/LoadingContainer';
+import LoadingContainer from '../LoadingContainer/LoadingContainer';
+import { IEventResponse } from '../../services/eventService/eventService';
 
 export interface IDataInput {
   val: string,
@@ -15,7 +16,7 @@ export interface IDateDataInput {
   error?: string
 }
 
-export interface ICreateData {
+export interface IUpdateData {
   startsAt: IDateDataInput,
   endsAt: IDateDataInput,
   address: IDataInput,
@@ -24,28 +25,40 @@ export interface ICreateData {
   tags: IDataInput[]
 }
 
-export interface ICreateEventModalProps {
+export interface IUpdateEventModalProps {
+  event: IEventResponse
   isLoading: boolean,
   show: boolean,
-  createEventAddress: string,
+  eventAddress: string,
   onCancel: () => void,
-  onCreate: (data: ICreateData) => void
+  onUpdate: (data: IUpdateData) => void,
+  onDelete: (data: IEventResponse) => void
 }
 
-const CreateEventModal: FC<ICreateEventModalProps> = (props) => {
+const UpdateEventModal: FC<IUpdateEventModalProps> = (props) => {
   const minEventTime = 35;
   const currentDate = new Date();
   const minStartsTime = new Date(currentDate.getTime() + 10 * 60000);
   const minOffsetEventTime = new Date(currentDate.getTime() + (10 + minEventTime) * 60000);
+
+  const tagsTiles = props.event.tags.map(t => t.title);
   const defaultTags = ["Drinks", "Music", "Sport", "Pets", "Outdoors"];
 
-  const [data, setData] = useState<ICreateData>({
-    startsAt: { val: minStartsTime },
-    endsAt: { val: minOffsetEventTime },
-    address: { val: props.createEventAddress },
-    title: { val: "" },
-    description: { val: "" },
-    tags: []
+  const startsAt = props.event.startsAt.getTime() < currentDate.getTime() ?
+    minStartsTime :
+    props.event.startsAt;
+
+  const endsAt = props.event.endsAt.getTime() < startsAt.getTime() + minEventTime * 60000 ?
+    minOffsetEventTime :
+    props.event.endsAt;
+
+  const [data, setData] = useState<IUpdateData>({
+    startsAt: { val: startsAt },
+    endsAt: { val: endsAt },
+    address: { val: props.eventAddress },
+    title: { val: props.event.title },
+    description: { val: props.event.description },
+    tags: tagsTiles.map(t => ({ val: t }))
   });
 
   const onStartsAtChangeHandle = (date: Date | null | undefined) => {
@@ -75,15 +88,14 @@ const CreateEventModal: FC<ICreateEventModalProps> = (props) => {
     setData(cur => ({ ...cur, tags: [...cur.tags, { val: value }] }));
   }
 
-  const onCreateHandler = () => {
-    console.log(data);
-    props.onCreate(data);
+  const onUpdateHandle = () => {
+    props.onUpdate(data);
   }
 
   return (
-    <Modal className='logout-modal' show={props.show} onHide={props.onCancel}>
+    <Modal className='event-update-modal' show={props.show} onHide={props.onCancel}>
       <Modal.Header>
-        <Modal.Title className='ms-3'><FaFire size="20px" className='me-2 mb-2' />New event</Modal.Title>
+        <Modal.Title className='ms-3'><FaFire size="20px" className='me-2 mb-2' />Edit event</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {props.isLoading ? <div className='pt-5'><LoadingContainer /></div> :
@@ -105,7 +117,8 @@ const CreateEventModal: FC<ICreateEventModalProps> = (props) => {
                     includeTime
                     min={minStartsTime}
                     value={data.startsAt.val}
-                    onChange={onStartsAtChangeHandle} />
+                    onChange={onStartsAtChangeHandle}
+                  />
                 </FormGroup>
               </Col>
               <Col md={6}>
@@ -124,7 +137,8 @@ const CreateEventModal: FC<ICreateEventModalProps> = (props) => {
                     includeTime
                     min={minOffsetEventTime}
                     value={data.endsAt.val}
-                    onChange={onEndsAtChangeHandle} />
+                    onChange={onEndsAtChangeHandle}
+                  />
                 </FormGroup>
               </Col>
             </Row>
@@ -198,16 +212,21 @@ const CreateEventModal: FC<ICreateEventModalProps> = (props) => {
           </Container >
         }
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-secondary" className='ps-3 pe-3' size='sm' disabled={props.isLoading} onClick={props.onCancel}>
-          Cancel
+      <Modal.Footer className="d-flex">
+        <Button variant="outline-danger" className='ps-3 pe-3' size='sm' disabled={props.isLoading} onClick={() => props.onDelete(props.event)}>
+          Delete
         </Button>
-        <Button variant="primary" className='ps-3 pe-3' size='sm' disabled={props.isLoading} onClick={onCreateHandler}>
-          Create
-        </Button>
+        <div className="ms-auto">
+          <Button variant="outline-secondary" className='ps-3 pe-3 me-2' size='sm' disabled={props.isLoading} onClick={props.onCancel}>
+            Cancel
+          </Button>
+          <Button variant="success" className='ps-3 pe-3' size='sm' disabled={props.isLoading} onClick={onUpdateHandle}>
+            Update
+          </Button>
+        </div>
       </Modal.Footer>
     </Modal >
   );
 }
 
-export default CreateEventModal;
+export default UpdateEventModal;

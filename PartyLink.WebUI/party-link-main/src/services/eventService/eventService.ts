@@ -32,9 +32,15 @@ export interface IEventUserResponse {
   avatar: IAvatar;
 }
 
+export interface IEventUserRole {
+  userId: string,
+  role: EventUserRole
+}
+
 export interface IEventResponse {
   id: string,
   ownerUser: IEventUserResponse,
+  usersRoles: IEventUserRole[]
   participantsCount: number,
   title: string,
   description: string,
@@ -49,6 +55,16 @@ export interface ICreateTagData {
 }
 
 export interface ICreateEventData {
+  title: string,
+  description: string,
+  startsAt: Date,
+  endsAt: Date,
+  location: IEventLocation,
+  tags: ICreateTagData[]
+}
+
+export interface IUpdateEventData {
+  id: string
   title: string,
   description: string,
   startsAt: Date,
@@ -74,6 +90,18 @@ export const eventService = {
       startsAt: getLocalDate(data.startsAt),
       endsAt: getLocalDate(data.endsAt)
     });
+    return response.data;
+  },
+  update: async (data: IUpdateEventData) => {
+    const response = await api.put(`/api/event/${data.id}`, {
+      ...data,
+      startsAt: getLocalDate(data.startsAt),
+      endsAt: getLocalDate(data.endsAt)
+    });
+    return response.data;
+  },
+  delete: async (id: string) => {
+    const response = await api.delete<IIdResponse>(`/api/event/${id}`);
     return response.data;
   }
 }

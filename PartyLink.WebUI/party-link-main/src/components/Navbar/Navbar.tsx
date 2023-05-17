@@ -1,6 +1,6 @@
 import './Navbar.scss';
 import { IoNotificationsOutline } from "react-icons/io5";
-import { FaMap, FaBookmark, FaUserCircle, FaFire, FaSignInAlt } from "react-icons/fa";
+import { FaMap, FaBookmark, FaUserCircle, FaFire, FaSignOutAlt } from "react-icons/fa";
 import { useQuery } from 'react-query';
 import { Navbar as BNavbar, Container, NavDropdown, Image } from 'react-bootstrap';
 import { useState } from 'react';
@@ -60,7 +60,7 @@ const Navbar = () => {
               <FaBookmark className='navbar-dropdown-item-icon' />Bookmarks
             </NavDropdown.Item>
             <NavDropdown.Item className='navbar-dropdown-item' onClick={showModal}>
-              <FaSignInAlt className='navbar-dropdown-item-icon' />Log out
+              <FaSignOutAlt className='navbar-dropdown-item-icon' />Log out
             </NavDropdown.Item>
             <LogoutModal show={isShowModal} onCancel={hideModal} onSubmit={logoutHandle} />
           </NavDropdown>

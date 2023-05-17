@@ -4,6 +4,7 @@ import { FaUserFriends } from "react-icons/fa";
 import { FC } from 'react';
 import { OverlayViewF } from '@react-google-maps/api';
 import { IEventResponse } from '../../../../../../services/eventService/eventService';
+import { useAuth } from '../../../../../../hooks/useAuth';
 
 export interface IEventMarkerProps {
   event: IEventResponse,
@@ -12,11 +13,24 @@ export interface IEventMarkerProps {
 }
 
 const EventMarker: FC<IEventMarkerProps> = ({ event, isSelected, onSelect }) => {
+  const { user } = useAuth();
+
   const [zIndex, setZIndex] = useState<number>(isSelected ? 1 : 0);
   const getPixelPositionOffset = (width: number, height: number) => ({
     x: -(width / 2),
     y: -height - 10
   });
+
+  const getStyle = () => {
+    if (isSelected)
+      return 'event-marker-container-selected';
+    else if (event.ownerUser.id === user?.id)
+      return 'event-marker-container-owner';
+    else if (event.usersRoles.some(ur => ur.userId === user?.id))
+      return 'event-marker-container-participant';
+    else
+      return 'event-marker-container-view';
+  }
 
   const onMouseEnterHandle = () => {
     setZIndex(2);
@@ -36,7 +50,7 @@ const EventMarker: FC<IEventMarkerProps> = ({ event, isSelected, onSelect }) => 
       getPixelPositionOffset={getPixelPositionOffset}
       zIndex={zIndex}
     >
-      <div className={isSelected ? 'event-marker-container-selected' : 'event-marker-container'}
+      <div className={getStyle()}
         onMouseEnter={onMouseEnterHandle}
         onMouseLeave={onMouseLeaveHandle}
         onClick={onSelect}>

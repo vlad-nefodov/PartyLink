@@ -1,6 +1,6 @@
-.event-marker-container {
+.event-marker-container-view {
   position: relative;
-  background-color: #0D6EFD;
+  background-color: #F04D5D;
   border-radius: 12%;
   padding: 4px 8px;
   display: flex;
@@ -19,24 +19,96 @@
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 10px solid #0D6EFD;
+    border-top: 10px solid #F04D5D;
   }
 
   &:hover {
     color: #FFFFFF;
-    background-color: #0B5ED7;
+    background-color: #C9404E;
     cursor: pointer;
     box-shadow: unset;
 
     &::before {
-      border-top: 10px solid #0B5ED7;
+      border-top: 10px solid #C9404E;
+    }
+  }
+}
+
+.event-marker-container-participant {
+  position: relative;
+  background-color: #84888C;
+  border-radius: 12%;
+  padding: 4px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F0FFFF;
+  box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #84888C;
+  }
+
+  &:hover {
+    color: #FFFFFF;
+    background-color: #74777A;
+    cursor: pointer;
+    box-shadow: unset;
+
+    &::before {
+      border-top: 10px solid #74777A;
+    }
+  }
+}
+
+.event-marker-container-owner {
+  position: relative;
+  background-color: #299663;
+  border-radius: 12%;
+  padding: 4px 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #F0FFFF;
+  box-shadow: 0px 6px 10px 2px rgba(0, 0, 0, 0.2);
+
+  &::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(100%);
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-top: 10px solid #299663;
+  }
+
+  &:hover {
+    color: #FFFFFF;
+    background-color: #157347;
+    cursor: pointer;
+    box-shadow: unset;
+
+    &::before {
+      border-top: 10px solid #157347;
     }
   }
 }
 
 .event-marker-container-selected {
   position: relative;
-  background-color: #FFC107;
+  background-color: #FFC61C;
   border-radius: 12%;
   padding: 4px 8px;
   display: flex;
@@ -55,6 +127,6 @@
     height: 0;
     border-left: 8px solid transparent;
     border-right: 8px solid transparent;
-    border-top: 10px solid #FFC107;
+    border-top: 10px solid #FFC61C;
   }
 }
