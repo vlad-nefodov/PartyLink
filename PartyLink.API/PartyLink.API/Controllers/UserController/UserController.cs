@@ -87,7 +87,7 @@ public class UserController : ControllerBase
 
             return StatusCode(StatusCodes.Status201Created, result);
         }
-        catch (TitleWithDescriptionAlreadyInUseException)
+        catch (EmailAlreadyInUseException)
         {
             ModelState.AddModelError(nameof(dataModel.Email), _errorMessagesManager.EmailAlreadyInUse());
             return StatusCode(StatusCodes.Status409Conflict, ModelState);
@@ -187,7 +187,7 @@ public class UserController : ControllerBase
                 _errorMessagesManager.InvalidPasswordHash());
             return StatusCode(StatusCodes.Status401Unauthorized, ModelState);
         }
-        catch (TitleWithDescriptionAlreadyInUseException)
+        catch (EmailAlreadyInUseException)
         {
             ModelState.AddModelError(nameof(dataModel.NewEmail), _errorMessagesManager.EmailAlreadyInUse());
             return StatusCode(StatusCodes.Status409Conflict, ModelState);
