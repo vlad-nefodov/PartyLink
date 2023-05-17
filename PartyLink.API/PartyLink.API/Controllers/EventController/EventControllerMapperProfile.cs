@@ -14,8 +14,11 @@ public class EventControllerMapperProfile : Profile
         // GetAll
         CreateMap<Event, GetAllEventsResultModel>()
             .ForMember(rm => rm.OwnerUser, opts => opts.MapFrom(e => GetOwnerUser(e)))
+            .ForMember(rm => rm.UsersRoles, opts => opts.MapFrom(e => e.Users))
             .ForMember(rm => rm.ParticipantsCount, opts => opts.MapFrom(e => e.Users.Count));
         CreateMap<EventLocation, EventLocationResultModel>();
+        CreateMap<EventUser, EventUserRoleResultModel>()
+            .ForMember(rm => rm.Role, opts => opts.MapFrom(eu => eu.EventUserRole));
         CreateMap<EventTag, EventTagResultModel>();
 
         // GetById

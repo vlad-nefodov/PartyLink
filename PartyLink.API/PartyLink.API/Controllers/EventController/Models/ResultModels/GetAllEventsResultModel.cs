@@ -4,6 +4,7 @@ public class GetAllEventsResultModel
 {
     public Guid Id { get; set; }
     public EventUserResultModel? OwnerUser { get; set; }
+    public IEnumerable<EventUserRoleResultModel> UsersRoles { get; set; } = new List<EventUserRoleResultModel>();
     public int ParticipantsCount { get; set; }
 
     public string Title { get; set; } = null!;
