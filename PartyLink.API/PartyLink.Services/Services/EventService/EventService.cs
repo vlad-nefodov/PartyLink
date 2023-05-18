@@ -133,12 +133,55 @@ public class EventService : IEventService
         return deletedEventEntity;
     }
 
+    public async Task JoinEventAsync(Guid eventId, Guid userId, CancellationToken cancellationToken = default)
+    {
+        // Get event
+        var eventEntity = await _eventRepository.GetByIdAsync(eventId, cancellationToken) ??
+                                  throw new NotFoundEventWithSpecifiedIdException(eventId);
+
+        // Get user
+        var userEntity = await _userRepository.GetByIdAsync(userId, cancellationToken) ??
+                         throw new NotFoundUserWithSpecifiedIdException(userId);
+
+        if (eventEntity.Users.Any(u => u.UserId == userEntity.Id))
+            throw new UserIsAlreadyJoinedException(eventId, userId);
+
+        eventEntity.Users.Add(new EventUser
+        {
+            User = userEntity,
+            EventUserRole = EventUserRole.Participant
+        });
+
+        // Save changes
+        await _eventRepository.SaveAsync(cancellationToken);
+    }
+
+    public async Task LeaveEventAsync(Guid eventId, Guid userId, CancellationToken cancellationToken = default)
+    {
+        // Get event
+        var eventEntity = await _eventRepository.GetByIdAsync(eventId, cancellationToken) ??
+                          throw new NotFoundEventWithSpecifiedIdException(eventId);
+
+        // Get user
+        var userEntity = await _userRepository.GetByIdAsync(userId, cancellationToken) ??
+                         throw new NotFoundUserWithSpecifiedIdException(userId);
+
+        var eventUserEntity = eventEntity.Users.SingleOrDefault(eu => eu.UserId == userEntity.Id);
+        if (eventUserEntity == null)
+            throw new UserIsNotJoinedException(eventId, userId);
+
+        eventEntity.Users.Remove(eventUserEntity);
+
+        // Save changes
+        await _eventRepository.SaveAsync(cancellationToken);
+    }
+
     private async Task<bool> IsTitleWithDescriptionAlreadyInUseAsync(string title, string description, Guid eventId,
         CancellationToken cancellationToken = default)
     {
         return await _eventRepository.GetAll()
-            .AnyAsync(e => e.Id != eventId && 
-                           e.Title == title && 
+            .AnyAsync(e => e.Id != eventId &&
+                           e.Title == title &&
                            e.Description == description, cancellationToken);
     }
 

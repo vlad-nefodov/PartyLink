@@ -12,7 +12,9 @@
     "TitleWithDescriptionAlreadyInUse": "An event with this Title and Description is already in use",
     "StartDateLessThanCurrentDate": "The event cannot start later than the current date",
     "InvalidEventDuration": "The duration of the event cannot be less than {0} minutes",
-    "NotEnoughEventAuthority": "Event user role must be {0}.",
+    "NotEnoughEventAuthority": "Event user role must be {0}",
+    "UserIsAlreadyJoined": "The user has already joined an event",
+    "UserIsNotJoined": "The user has not yet joined an event",
     "InvalidAttribute": {
       "RequiredField": "Is required",
       "MinFieldLength": "Length must be greater than or equal to {0} characters",

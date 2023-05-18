@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using PartyLink.API.Configuration.Managers.Interfaces;
 using PartyLink.API.Controllers.EventController.Models.DataModels;
 using PartyLink.API.Controllers.EventController.Models.ResultModels;
+using PartyLink.Domain.Entities;
 using PartyLink.Services.Exceptions;
 using PartyLink.Services.Services.EventService.Dto;
 using PartyLink.Services.Services.EventService.Exceptions;
@@ -161,6 +162,66 @@ public class EventController : ControllerBase
             ModelState.AddModelError($"{nameof(dataModel.StartsAt)} and {nameof(dataModel.EndsAt)}",
                 _errorMessagesManager.InvalidEventDuration(_minEventMinutesDuration));
             return StatusCode(StatusCodes.Status400BadRequest, ModelState);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    /// <summary>
+    ///     Join event by event id
+    /// </summary>
+    [Authorize]
+    [HttpPut("{id:guid}/join")]
+    public async Task<IActionResult> JoinByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _eventService.JoinEventAsync(id, userId, cancellationToken);
+
+            return StatusCode(StatusCodes.Status200OK);
+        }
+        catch (NotFoundEventWithSpecifiedIdException)
+        {
+            ModelState.AddModelError(nameof(id), _errorMessagesManager.NotFoundEventWithSpecifiedId());
+            return StatusCode(StatusCodes.Status404NotFound, ModelState);
+        }
+        catch (UserIsAlreadyJoinedException)
+        {
+            ModelState.AddModelError("eventUser", _errorMessagesManager.UserIsAlreadyJoined());
+            return StatusCode(StatusCodes.Status409Conflict, ModelState);
+        }
+        catch
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError);
+        }
+    }
+
+    /// <summary>
+    ///     Leave event by event id
+    /// </summary>
+    [Authorize]
+    [HttpPut("{id:guid}/leave")]
+    public async Task<IActionResult> LeaveByIdAsync(Guid id, CancellationToken cancellationToken)
+    {
+        try
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
+            await _eventService.LeaveEventAsync(id, userId, cancellationToken);
+
+            return StatusCode(StatusCodes.Status200OK);
+        }
+        catch (NotFoundEventWithSpecifiedIdException)
+        {
+            ModelState.AddModelError(nameof(id), _errorMessagesManager.NotFoundEventWithSpecifiedId());
+            return StatusCode(StatusCodes.Status404NotFound, ModelState);
+        }
+        catch (UserIsNotJoinedException)
+        {
+            ModelState.AddModelError("eventUser", _errorMessagesManager.UserIsNotJoined());
+            return StatusCode(StatusCodes.Status409Conflict, ModelState);
         }
         catch
         {

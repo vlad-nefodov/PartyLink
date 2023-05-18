@@ -15,6 +15,8 @@ export interface ISidebarEventItemProps {
   endsAt: Date,
   title: string,
   tags: string[],
+  onJoinClick: (event: IEventResponse) => void,
+  onLeaveClick: (event: IEventResponse) => void,
   onEditClick: (event: IEventResponse) => void,
   onSelect: (eventId: string) => void
 }
@@ -41,14 +43,14 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
       case EventUserRole.Participant:
         if (props.isJoined) {
           return (
-            <Button variant="secondary" className='ps-2 pe-2 d-flex align-items-center' size='sm'>
+            <Button variant="secondary" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onLeaveClick(props.event)}>
               <FaSignOutAlt style={{ marginRight: "5px" }} size="14px" />Leave
             </Button>
           );
         }
         else {
           return (
-            <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm'>
+            <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onJoinClick(props.event)}>
               <HiPlus className='me-1' size="16px" />Join
             </Button>
           )

@@ -16,4 +16,6 @@ public interface IEventService
         CancellationToken cancellationToken = default);
 
     public Task<Event> DeleteByIdWithOwnerIdAsync(Guid id, Guid ownerId, CancellationToken cancellationToken = default);
+    public Task JoinEventAsync(Guid eventId, Guid userId, CancellationToken cancellationToken = default);
+    public Task LeaveEventAsync(Guid eventId, Guid userId, CancellationToken cancellationToken = default);
 }

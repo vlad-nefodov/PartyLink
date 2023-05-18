@@ -100,6 +100,14 @@ export const eventService = {
     });
     return response.data;
   },
+  join: async (id: string) => {
+    const response = await api.put(`/api/event/${id}/join`);
+    return response.data;
+  },
+  leave: async (id: string) => {
+    const response = await api.put(`/api/event/${id}/leave`);
+    return response.data;
+  },
   delete: async (id: string) => {
     const response = await api.delete<IIdResponse>(`/api/event/${id}`);
     return response.data;

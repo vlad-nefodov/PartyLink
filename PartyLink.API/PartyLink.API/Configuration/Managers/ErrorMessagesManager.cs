@@ -90,6 +90,16 @@ public sealed class ErrorMessagesManager : IErrorMessagesManager
         return string.Format(_configuration[$"{_messagesPath}{nameof(NotEnoughEventAuthority)}"]!, requiredRole);
     }
 
+    public string UserIsAlreadyJoined()
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(UserIsAlreadyJoined)}"]!);
+    }
+
+    public string UserIsNotJoined()
+    {
+        return string.Format(_configuration[$"{_messagesPath}{nameof(UserIsNotJoined)}"]!);
+    }
+
     public string InvalidAttributeRequiredField()
     {
         return string.Format(_configuration[$"{_invalidAttributePath}RequiredField"]!);

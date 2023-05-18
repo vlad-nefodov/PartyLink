@@ -40,6 +40,20 @@ function MapPage() {
   });
 
   const {
+    mutate: joinEventMutation,
+    isLoading: isJoinEventLoading
+  } = useMutation("joinEvent", eventService.join, {
+    onSuccess: () => queryClient.invalidateQueries('getAllEvents')
+  });
+
+  const {
+    mutate: leaveEventMutation,
+    isLoading: isLeaveEventLoading
+  } = useMutation("leaveEvent", eventService.leave, {
+    onSuccess: () => queryClient.invalidateQueries('getAllEvents')
+  });
+
+  const {
     mutate: deleteEventMutation,
     isLoading: isDeleteEventLoading
   } = useMutation("deleteEvent", eventService.delete, {
@@ -73,6 +87,14 @@ function MapPage() {
       latitude: event.location.latitude,
       longitude: event.location.longitude
     });
+  }
+
+  const onJoinEventHandle = (event: IEventResponse) => {
+    joinEventMutation(event.id);
+  }
+
+  const onLeaveEventHandle = (event: IEventResponse) => {
+    leaveEventMutation(event.id);
   }
 
   const onCreateEventModalCreateHandle = (data: ICreateData) => {
@@ -125,6 +147,8 @@ function MapPage() {
   return (
     <div className="map-page-container">
       <EventSidebar
+        onJoinClick={onJoinEventHandle}
+        onLeaveClick={onLeaveEventHandle}
         events={eventsData}
         selectedEventId={selectedEventId}
         onEditClick={onUpdateEventHandle}

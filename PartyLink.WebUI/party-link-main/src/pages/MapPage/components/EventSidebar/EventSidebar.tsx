@@ -9,11 +9,13 @@ import { useAuth } from '../../../../hooks/useAuth';
 export interface IEventSidebarProps {
   events?: IEventResponse[],
   selectedEventId?: string,
+  onJoinClick: (event: IEventResponse) => void,
+  onLeaveClick: (event: IEventResponse) => void,
   onEditClick: (event: IEventResponse) => void,
   onSelectEvent: (eventId: string) => void
 }
 
-const EventSidebar: FC<IEventSidebarProps> = ({ events, selectedEventId, onEditClick, onSelectEvent }) => {
+const EventSidebar: FC<IEventSidebarProps> = ({ events, selectedEventId, onJoinClick, onLeaveClick, onEditClick, onSelectEvent }) => {
   if (!events) {
     return <div className='sidebar-container'><LoadingContainer /></div>
   }
@@ -33,6 +35,8 @@ const EventSidebar: FC<IEventSidebarProps> = ({ events, selectedEventId, onEditC
             endsAt={new Date(e.endsAt)}
             title={e.title}
             tags={e.tags.map(t => t.title)}
+            onJoinClick={onJoinClick}
+            onLeaveClick={onLeaveClick}
             onEditClick={onEditClick}
             onSelect={onSelectEvent}
           />

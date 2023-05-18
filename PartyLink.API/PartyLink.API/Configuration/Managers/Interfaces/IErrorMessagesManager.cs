@@ -18,6 +18,8 @@ public interface IErrorMessagesManager
     public string StartDateLessThanCurrentDate();
     public string InvalidEventDuration(int minMinutesDuration);
     public string NotEnoughEventAuthority(EventUserRole requiredRole);
+    public string UserIsAlreadyJoined();
+    public string UserIsNotJoined();
 
     public string InvalidAttributeRequiredField();
     public string InvalidAttributeMinFieldLength(int length);
