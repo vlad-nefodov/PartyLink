@@ -1,5 +1,9 @@
-.sidebar-event-item {}
+.sidebar-event-item {
+  scroll-margin-block: 16px;
+}
 
 .sidebar-event-item-selected {
-  box-shadow: 0 0 10px rgba($color: #FFC61C, $alpha: 0.7);
+  cursor: pointer;
+  border-width: 1px;
+  box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.7);
 }

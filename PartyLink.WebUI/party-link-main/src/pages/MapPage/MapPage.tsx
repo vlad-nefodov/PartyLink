@@ -1,5 +1,5 @@
 import './MapPage.scss';
-import { useState } from 'react';
+import { useState, useRef, useCallback } from 'react';
 import { useLoadScript } from '@react-google-maps/api';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { IEventLocation, IEventResponse, eventService } from '../../services/eventService/eventService';
@@ -40,18 +40,12 @@ function MapPage() {
   });
 
   const {
-    mutate: joinEventMutation,
-    isLoading: isJoinEventLoading
-  } = useMutation("joinEvent", eventService.join, {
-    onSuccess: () => queryClient.invalidateQueries('getAllEvents')
-  });
+    mutateAsync: joinEventMutationAsync
+  } = useMutation("joinEvent", eventService.join);
 
   const {
-    mutate: leaveEventMutation,
-    isLoading: isLeaveEventLoading
-  } = useMutation("leaveEvent", eventService.leave, {
-    onSuccess: () => queryClient.invalidateQueries('getAllEvents')
-  });
+    mutateAsync: leaveEventMutationAsync
+  } = useMutation("leaveEvent", eventService.leave);
 
   const {
     mutate: deleteEventMutation,
@@ -61,14 +55,21 @@ function MapPage() {
   });
 
 
+  const mapRef = useRef<google.maps.Map>();
+
+  const onMapLoad = useCallback((map: google.maps.Map) => {
+    mapRef.current = map;
+  }, []);
+
   const [mapZoom, setMapZoom] = useState<number>(6);
   const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>({ lat: 49.842957, lng: 24.031111 });
-  const [selectedEventId, setSelectedEventId] = useState<string>();
+  const [loadingEventsIds, setLoadingEventsIds] = useState<string[]>([]);
+  const [selectedEvent, setSelectedEvent] = useState<IEventResponse>();
   const [createEventLocation, setCreateEventLocation] = useState<google.maps.LatLngLiteral>();
   const [eventToUpdate, setEventToUpdate] = useState<IEventResponse>();
 
-  const selectEventHandle = (id: string) => {
-    setSelectedEventId(id);
+  const selectEventHandle = (event: IEventResponse) => {
+    setSelectedEvent(event);
   }
 
   const onCreateEventHandle = (location: google.maps.LatLngLiteral) => {
@@ -89,12 +90,34 @@ function MapPage() {
     });
   }
 
-  const onJoinEventHandle = (event: IEventResponse) => {
-    joinEventMutation(event.id);
+  const onJoinEventHandle = async (event: IEventResponse) => {
+    setLoadingEventsIds(cur => [...cur, event.id]);
+
+    await joinEventMutationAsync(event.id);
+
+    await queryClient.refetchQueries('getAllEvents');
+    await queryClient.refetchQueries('getAllEvents');
+    setLoadingEventsIds(cur => cur.filter(i => i !== event.id));
   }
 
-  const onLeaveEventHandle = (event: IEventResponse) => {
-    leaveEventMutation(event.id);
+  const onLeaveEventHandle = async (event: IEventResponse) => {
+    setLoadingEventsIds(cur => [...cur, event.id]);
+
+    leaveEventMutationAsync(event.id);
+
+    await queryClient.refetchQueries('getAllEvents');
+    await queryClient.refetchQueries('getAllEvents');
+    setLoadingEventsIds(cur => cur.filter(i => i !== event.id));
+  }
+
+  const onViewEventHandle = (event: IEventResponse) => {
+    if (mapRef.current) {
+      mapRef.current.setZoom(12);
+      mapRef.current.panTo({
+        lat: event.location.latitude,
+        lng: event.location.longitude
+      });
+    }
   }
 
   const onCreateEventModalCreateHandle = (data: ICreateData) => {
@@ -147,11 +170,13 @@ function MapPage() {
   return (
     <div className="map-page-container">
       <EventSidebar
+        events={eventsData}
+        loadingEventsIds={loadingEventsIds}
+        selectedEvent={selectedEvent}
+        onEditClick={onUpdateEventHandle}
+        onViewClick={onViewEventHandle}
         onJoinClick={onJoinEventHandle}
         onLeaveClick={onLeaveEventHandle}
-        events={eventsData}
-        selectedEventId={selectedEventId}
-        onEditClick={onUpdateEventHandle}
         onSelectEvent={selectEventHandle} />
       <EventMap
         events={eventsData}
@@ -159,8 +184,9 @@ function MapPage() {
         center={mapCenter}
         zoom={mapZoom}
         onCreateEvent={onCreateEventHandle}
-        selectedEventId={selectedEventId}
-        onSelectEvent={selectEventHandle} />
+        selectedEvent={selectedEvent}
+        onSelectEvent={selectEventHandle}
+        onLoad={onMapLoad} />
       {
         !isEventAddressLoading ?
           <CreateEventModal

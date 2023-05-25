@@ -15,12 +15,13 @@ export interface IEventMapProps {
   center: google.maps.LatLngLiteral,
   zoom: number,
   events?: IEventResponse[],
-  selectedEventId?: string,
+  selectedEvent?: IEventResponse,
   onCreateEvent: (location: google.maps.LatLngLiteral) => void,
-  onSelectEvent: (id: string) => void
+  onSelectEvent: (id: IEventResponse) => void,
+  onLoad?: (map: google.maps.Map) => void | Promise<void>
 }
 
-const EventMap: FC<IEventMapProps> = ({ isLoading, center, zoom, events, selectedEventId, onCreateEvent, onSelectEvent }) => {
+const EventMap: FC<IEventMapProps> = ({ isLoading, center, zoom, events, selectedEvent, onCreateEvent, onSelectEvent, onLoad }) => {
   if (isLoading) {
     return <LoadingContainer />;
   }
@@ -28,11 +29,11 @@ const EventMap: FC<IEventMapProps> = ({ isLoading, center, zoom, events, selecte
 
   const getAllEventMarkers = () => {
     return events?.map(e => {
-      if (e.id === selectedEventId) {
-        return <EventMarker key={e.id} event={e} onSelect={() => onSelectEvent(e.id)} isSelected />
+      if (e.id === selectedEvent?.id) {
+        return <EventMarker key={e.id} event={e} onSelect={() => onSelectEvent(e)} isSelected />
       }
 
-      return <EventMarker key={e.id} event={e} onSelect={() => onSelectEvent(e.id)} />
+      return <EventMarker key={e.id} event={e} onSelect={() => onSelectEvent(e)} />
     });
   }
 
@@ -68,6 +69,7 @@ const EventMap: FC<IEventMapProps> = ({ isLoading, center, zoom, events, selecte
       options={{ ...options, styles }}
       onClick={onClickHandle}
       onRightClick={onRightClickHandle}
+      onLoad={onLoad}
     >
       {getAllEventMarkers()}
       {!createEventLocation ? null :

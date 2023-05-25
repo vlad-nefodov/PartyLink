@@ -8,14 +8,16 @@ import { useAuth } from '../../../../hooks/useAuth';
 
 export interface IEventSidebarProps {
   events?: IEventResponse[],
-  selectedEventId?: string,
+  loadingEventsIds: string[],
+  selectedEvent?: IEventResponse,
   onJoinClick: (event: IEventResponse) => void,
   onLeaveClick: (event: IEventResponse) => void,
   onEditClick: (event: IEventResponse) => void,
-  onSelectEvent: (eventId: string) => void
+  onViewClick: (event: IEventResponse) => void,
+  onSelectEvent: (event: IEventResponse) => void
 }
 
-const EventSidebar: FC<IEventSidebarProps> = ({ events, selectedEventId, onJoinClick, onLeaveClick, onEditClick, onSelectEvent }) => {
+const EventSidebar: FC<IEventSidebarProps> = ({ events, loadingEventsIds, selectedEvent, onJoinClick, onLeaveClick, onEditClick, onViewClick, onSelectEvent }) => {
   if (!events) {
     return <div className='sidebar-container'><LoadingContainer /></div>
   }
@@ -27,7 +29,8 @@ const EventSidebar: FC<IEventSidebarProps> = ({ events, selectedEventId, onJoinC
       {events.map(e => {
         return <div key={e.id} className='pb-3'>
           <SidebarEventItem
-            isSelected={e.id === selectedEventId}
+            isLoading={loadingEventsIds.includes(e.id)}
+            isSelected={e.id === selectedEvent?.id}
             event={e}
             isJoined={e.usersRoles.some(ur => ur.userId === user?.id)}
             userRole={e.ownerUser.id === user?.id ? EventUserRole.Owner : EventUserRole.Participant}
@@ -38,6 +41,7 @@ const EventSidebar: FC<IEventSidebarProps> = ({ events, selectedEventId, onJoinC
             onJoinClick={onJoinClick}
             onLeaveClick={onLeaveClick}
             onEditClick={onEditClick}
+            onViewClick={onViewClick}
             onSelect={onSelectEvent}
           />
         </div>

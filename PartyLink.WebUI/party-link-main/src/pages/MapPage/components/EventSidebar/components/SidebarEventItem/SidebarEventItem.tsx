@@ -1,6 +1,6 @@
 import './SidebarEventItem.scss';
-import { FC } from 'react';
-import { Card, Badge, Row, Col, Button } from 'react-bootstrap';
+import { FC, useRef } from 'react';
+import { Card, Badge, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { FaCalendarAlt, FaRegClock, FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineMyLocation } from "react-icons/md";
 import { HiPlus } from "react-icons/hi";
@@ -10,7 +10,8 @@ export interface ISidebarEventItemProps {
   event: IEventResponse,
   isSelected?: boolean,
   isJoined: boolean,
-  userRole: EventUserRole
+  isLoading?: boolean,
+  userRole: EventUserRole,
   startsAt: Date,
   endsAt: Date,
   title: string,
@@ -18,10 +19,17 @@ export interface ISidebarEventItemProps {
   onJoinClick: (event: IEventResponse) => void,
   onLeaveClick: (event: IEventResponse) => void,
   onEditClick: (event: IEventResponse) => void,
-  onSelect: (eventId: string) => void
+  onViewClick: (event: IEventResponse) => void,
+  onSelect: (event: IEventResponse) => void
 }
 
 const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
+  const cardRef = useRef<HTMLDivElement>();
+
+  if (cardRef.current && props.isSelected) {
+    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
   const getFormattedTime = (date: Date) => {
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -33,6 +41,14 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
   }
 
   const getPrimaryButton = () => {
+    if (props.isLoading) {
+      return (
+        <div className="d-flex justify-content-center align-items-center" style={{ minWidth: 'BUTTON_WIDTH', minHeight: 'BUTTON_HEIGHT' }}>
+          <Spinner animation='border' variant='secondary' />
+        </div>
+      );
+    }
+
     switch (props.userRole) {
       case EventUserRole.Owner:
         return (
@@ -53,15 +69,16 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
             <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onJoinClick(props.event)}>
               <HiPlus className='me-1' size="16px" />Join
             </Button>
-          )
+          );
         }
     }
   }
 
   return (
     <Card
+      ref={cardRef as any}
       className={props.isSelected ? "sidebar-event-item-selected" : "sidebar-event-item"}
-      onMouseEnter={() => props.onSelect(props.event.id)}>
+      onMouseEnter={() => props.onSelect(props.event)}>
       <Card.Header className='d-flex justify-content-between'>
         <Col xs="auto">
           <FaCalendarAlt size="12px" className='mb-1 me-1' />{props.startsAt.toDateString()}
@@ -91,7 +108,7 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
             <Row>
               <Col xs={12}>
                 <div className='d-grid'>
-                  <Button variant="outline-primary" className='ps-2 pe-2 d-flex align-items-center' size='sm'>
+                  <Button variant="outline-primary" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onViewClick(props.event)}>
                     <MdOutlineMyLocation className='me-1' size="16px" />View
                   </Button>
                 </div>
