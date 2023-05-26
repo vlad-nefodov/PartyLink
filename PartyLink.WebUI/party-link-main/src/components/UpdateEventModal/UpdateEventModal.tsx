@@ -212,7 +212,7 @@ const UpdateEventModal: FC<IUpdateEventModalProps> = (props) => {
           </Container >
         }
       </Modal.Body>
-      <Modal.Footer className="d-flex">
+      <Modal.Footer className="d-flex event-update-modal-footer">
         <Button variant="outline-danger" className='ps-3 pe-3' size='sm' disabled={props.isLoading} onClick={() => props.onDelete(props.event)}>
           Delete
         </Button>

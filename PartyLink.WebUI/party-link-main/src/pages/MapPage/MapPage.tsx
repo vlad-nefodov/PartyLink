@@ -1,5 +1,5 @@
 import './MapPage.scss';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useLoadScript } from '@react-google-maps/api';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { IEventLocation, IEventResponse, eventService } from '../../services/eventService/eventService';
@@ -9,6 +9,8 @@ import CreateEventModal, { ICreateData } from '../../components/CreateEventModal
 import { geocodeService } from '../../services/geocodeService/geocodeService';
 import UpdateEventModal, { IUpdateData } from '../../components/UpdateEventModal/UpdateEventModal';
 import { ToastContainer, toast } from 'react-toastify';
+import { ShowEvents } from './components/EventSidebar/components/SearchPanel/SearchPanel';
+import { useAuth } from '../../hooks/useAuth';
 
 function MapPage() {
   const { isLoaded } = useLoadScript({
@@ -61,10 +63,30 @@ function MapPage() {
 
 
   const mapRef = useRef<google.maps.Map>();
-
   const onMapLoad = useCallback((map: google.maps.Map) => {
     mapRef.current = map;
   }, []);
+
+  const { user } = useAuth();
+  const [showEvents, setShowEvents] = useState<ShowEvents>(ShowEvents.All);
+  const [searchFilter, setSearchFilter] = useState<string>("");
+  const [events, setEvents] = useState<IEventResponse[]>();
+  useEffect(() => {
+    let filteredEvents = eventsData?.filter(e => new Date(e.endsAt) >= new Date());
+
+    switch (showEvents) {
+      case ShowEvents.Community:
+        filteredEvents = filteredEvents?.filter(e => e.ownerUser.id !== user?.id);
+        break;
+      case ShowEvents.Owned:
+        filteredEvents = filteredEvents?.filter(e => e.ownerUser.id === user?.id);
+        break;
+    }
+
+    filteredEvents = filteredEvents?.filter(e => e.title.startsWith(searchFilter));
+
+    setEvents(filteredEvents);
+  }, [eventsData, showEvents, searchFilter]);
 
   const [mapZoom, setMapZoom] = useState<number>(6);
   const [mapCenter, setMapCenter] = useState<google.maps.LatLngLiteral>({ lat: 49.842957, lng: 24.031111 });
@@ -183,19 +205,30 @@ function MapPage() {
     })
   }
 
+  const onShowEventsChangedHandle = (showEvents: ShowEvents) => {
+    setShowEvents(showEvents);
+  }
+
+  const onSearchHandle = (input: string) => {
+    setSearchFilter(input);
+  }
+
   return (
     <div className="map-page-container">
       <EventSidebar
-        events={eventsData}
+        events={events}
+        showEvents={showEvents}
         loadingEventsIds={loadingEventsIds}
         selectedEvent={selectedEvent}
         onEditClick={onUpdateEventHandle}
         onViewClick={onViewEventHandle}
         onJoinClick={onJoinEventHandle}
         onLeaveClick={onLeaveEventHandle}
-        onSelectEvent={selectEventHandle} />
+        onSelectEvent={selectEventHandle}
+        onShowEventsChanged={onShowEventsChangedHandle}
+        onSearch={onSearchHandle} />
       <EventMap
-        events={eventsData}
+        events={events}
         isLoading={!isLoaded && isEventsLoading}
         center={mapCenter}
         zoom={mapZoom}

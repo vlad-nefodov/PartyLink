@@ -197,7 +197,7 @@ const CreateEventModal: FC<ICreateEventModalProps> = (props) => {
           </Container >
         }
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className='event-create-modal-footer'>
         <Button variant="outline-secondary" className='ps-3 pe-3' size='sm' disabled={props.isLoading} onClick={props.onCancel}>
           Cancel
         </Button>
