@@ -6,14 +6,16 @@ import Layout from '../layouts/Layout/Layout'
 import LoginPage from '../pages/LoginPage/LoginPage'
 import SignupPage from '../pages/SignupPage/SignupPage'
 import MapPage from '../pages/MapPage/MapPage'
-import ProfilePage from '../pages/ProfilePage/ProfilePage'
+import SettingsPage from '../pages/SettingsPage/SettingsPage'
 
 function App() {
   return (
     <Routes>
       <Route path="/*" element={<AuthLayout />}>
         <Route index element={<MapPage />} />
-        <Route path="profile" element={<ProfilePage />} />
+        <Route path="profile/:id" element={<div>Profile</div>} />
+        <Route path="event/:id" element={<div>Event</div>} />
+        <Route path="settings" element={<SettingsPage />} />
       </Route>
       <Route path="/*" element={<Layout />}>
         <Route path="login" element={<LoginPage />} />

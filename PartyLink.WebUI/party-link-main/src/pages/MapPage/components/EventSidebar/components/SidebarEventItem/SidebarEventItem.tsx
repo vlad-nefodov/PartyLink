@@ -1,5 +1,6 @@
 import './SidebarEventItem.scss';
 import { FC, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, Badge, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { FaCalendarAlt, FaRegClock, FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
 import { MdOutlineMyLocation } from "react-icons/md";
@@ -24,6 +25,9 @@ export interface ISidebarEventItemProps {
 }
 
 const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
+  const navigate = useNavigate();
+  const goToEvent = () => navigate(`/event/${props.event.id}`);
+
   const cardRef = useRef<HTMLDivElement>();
 
   if (cardRef.current && props.isSelected) {
@@ -78,7 +82,8 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
     <Card
       ref={cardRef as any}
       className={props.isSelected ? "sidebar-event-item-selected" : "sidebar-event-item"}
-      onMouseEnter={() => props.onSelect(props.event)}>
+      onMouseEnter={() => props.onSelect(props.event)}
+      onClick={goToEvent}>
       <Card.Header className='d-flex justify-content-between'>
         <Col xs="auto">
           <FaCalendarAlt size="12px" className='mb-1 me-1' />{props.startsAt.toDateString()}

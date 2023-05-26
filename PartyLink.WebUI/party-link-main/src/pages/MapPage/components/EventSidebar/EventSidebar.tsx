@@ -36,7 +36,9 @@ const EventSidebar: FC<IEventSidebarProps> = (props) => {
         onSearch={props.onSearch} />
       <div className="event-items-container pt-3 ps-3 pe-3">
         {props.events?.length === 0 ?
-          <div className="d-flex justify-content-center align-items-center h-100"><FaRegSurprise className='me-2' size="24px" />Not found events</div>
+          <div className="d-flex justify-content-center align-items-center h-100">
+            <FaRegSurprise className='me-2' size="24px" />No events found
+          </div>
           : props.events.map(e => {
             return <div key={e.id} className='pb-3'>
               <SidebarEventItem
