@@ -8,6 +8,7 @@ import EventMap from './components/Map/EventMap';
 import CreateEventModal, { ICreateData } from '../../components/CreateEventModal/CreateEventModal';
 import { geocodeService } from '../../services/geocodeService/geocodeService';
 import UpdateEventModal, { IUpdateData } from '../../components/UpdateEventModal/UpdateEventModal';
+import { ToastContainer, toast } from 'react-toastify';
 
 function MapPage() {
   const { isLoaded } = useLoadScript({
@@ -15,6 +16,10 @@ function MapPage() {
   });
   const queryClient = useQueryClient();
   const { data: eventsData, isLoading: isEventsLoading } = useQuery("getAllEvents", eventService.getAll);
+
+  const showSuccess = (message: string) => {
+    toast.success(message);
+  }
 
   const {
     mutate: eventAddressMutation,
@@ -98,6 +103,7 @@ function MapPage() {
     await queryClient.refetchQueries('getAllEvents');
     await queryClient.refetchQueries('getAllEvents');
     setLoadingEventsIds(cur => cur.filter(i => i !== event.id));
+    showSuccess(`Joined ${event.title}`);
   }
 
   const onLeaveEventHandle = async (event: IEventResponse) => {
@@ -108,6 +114,7 @@ function MapPage() {
     await queryClient.refetchQueries('getAllEvents');
     await queryClient.refetchQueries('getAllEvents');
     setLoadingEventsIds(cur => cur.filter(i => i !== event.id));
+    showSuccess(`Left ${event.title}`);
   }
 
   const onViewEventHandle = (event: IEventResponse) => {
@@ -132,7 +139,10 @@ function MapPage() {
       description: data.description.val,
       tags: data.tags.map(t => ({ title: t.val }))
     }, {
-      onSuccess: () => setCreateEventLocation(undefined)
+      onSuccess: () => {
+        setCreateEventLocation(undefined);
+        showSuccess(`${data.title.val} was created!`);
+      }
     })
   }
 
@@ -153,7 +163,10 @@ function MapPage() {
       description: data.description.val,
       tags: data.tags.map(t => ({ title: t.val }))
     }, {
-      onSuccess: () => setEventToUpdate(undefined)
+      onSuccess: () => {
+        setEventToUpdate(undefined);
+        showSuccess(`${data.title.val} was updated!`);
+      }
     })
   }
 
@@ -163,7 +176,10 @@ function MapPage() {
 
   const onDeleteEventModalUpdateHandle = (data: IEventResponse) => {
     deleteEventMutation(data.id, {
-      onSuccess: () => setEventToUpdate(undefined)
+      onSuccess: () => {
+        setEventToUpdate(undefined);
+        showSuccess(`${data.title} was deleted!`);
+      }
     })
   }
 
@@ -207,6 +223,18 @@ function MapPage() {
             onDelete={onDeleteEventModalUpdateHandle}
             onCancel={onUpdateEventModalCancelHandle} /> : null
       }
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick={false}
+        rtl={false}
+        pauseOnFocusLoss={false}
+        draggable={false}
+        pauseOnHover={false}
+        theme='colored'
+      />
     </div>
   );
 }

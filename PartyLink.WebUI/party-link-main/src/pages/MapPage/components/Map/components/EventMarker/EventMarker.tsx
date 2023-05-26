@@ -54,7 +54,7 @@ const EventMarker: FC<IEventMarkerProps> = ({ event, isSelected, onSelect }) => 
         onMouseEnter={onMouseEnterHandle}
         onMouseLeave={onMouseLeaveHandle}
         onClick={onSelect}>
-        <h5 className='m-0'><FaUserFriends size="20px" className='me-1' />{event.participantsCount}</h5>
+        <h5 className='m-0'><FaUserFriends className='me-1' />{event.participantsCount}</h5>
       </div>
     </OverlayViewF>
   )
