@@ -5,8 +5,8 @@ import { FaSearch } from "react-icons/fa";
 
 export enum ShowEvents {
   All = 0,
-  Community = 1,
-  Owned = 2,
+  Hosting = 1,
+  Community = 2
 }
 
 export interface ISearchPanelProps {
@@ -61,10 +61,10 @@ const SearchPanel: FC<ISearchPanelProps> = ({ showEvents, onShowEventsChanged, o
             <FormCheck
               inline
               type="radio"
-              label="Owned"
-              id="owned"
-              checked={showEvents == ShowEvents.Owned}
-              onChange={() => onChangeShowEventsHandle(ShowEvents.Owned)} />
+              label="Hosting"
+              id="hosting"
+              checked={showEvents == ShowEvents.Hosting}
+              onChange={() => onChangeShowEventsHandle(ShowEvents.Hosting)} />
           </Col>
           <Col xs="auto" className="p-0">
             <FormCheck

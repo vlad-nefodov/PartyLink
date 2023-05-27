@@ -1,5 +1,5 @@
 import './SidebarEventItem.scss';
-import { FC, useRef } from 'react';
+import { FC, useRef, MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Card, Badge, Row, Col, Button, Spinner } from 'react-bootstrap';
 import { FaCalendarAlt, FaRegClock, FaPencilAlt, FaSignOutAlt } from "react-icons/fa";
@@ -44,6 +44,30 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
     return `${hours}:${minutes.toString().padStart(2, '0')} AM`;
   }
 
+  const onEditClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    props.onEditClick(props.event)
+  }
+
+  const onLeaveClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    props.onLeaveClick(props.event)
+  }
+
+  const onJoinClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    props.onJoinClick(props.event)
+  }
+
+  const onViewClickHandle = (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    props.onViewClick(props.event)
+  }
+
   const getPrimaryButton = () => {
     if (props.isLoading) {
       return (
@@ -56,21 +80,21 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
     switch (props.userRole) {
       case EventUserRole.Owner:
         return (
-          <Button variant="success" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onEditClick(props.event)}>
+          <Button variant="success" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={onEditClickHandle}>
             <FaPencilAlt style={{ marginRight: "6px" }} size="14px" />Edit
           </Button>
         );
       case EventUserRole.Participant:
         if (props.isJoined) {
           return (
-            <Button variant="secondary" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onLeaveClick(props.event)}>
+            <Button variant="secondary" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={onLeaveClickHandle}>
               <FaSignOutAlt style={{ marginRight: "5px" }} size="14px" />Leave
             </Button>
           );
         }
         else {
           return (
-            <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onJoinClick(props.event)}>
+            <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={onJoinClickHandle}>
               <HiPlus className='me-1' size="16px" />Join
             </Button>
           );
@@ -113,7 +137,7 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
             <Row>
               <Col xs={12}>
                 <div className='d-grid'>
-                  <Button variant="outline-primary" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={() => props.onViewClick(props.event)}>
+                  <Button variant="outline-primary" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={onViewClickHandle}>
                     <MdOutlineMyLocation className='me-1' size="16px" />View
                   </Button>
                 </div>

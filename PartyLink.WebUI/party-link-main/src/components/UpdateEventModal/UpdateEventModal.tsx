@@ -1,6 +1,6 @@
 import './UpdateEventModal.scss';
 import { FC, useState, ChangeEvent } from 'react';
-import { FaFire, FaMapMarkerAlt, FaTags, FaCalendarAlt, FaAlignLeft, FaGlobe, FaPencilAlt, FaArrowRight } from "react-icons/fa";
+import { FaCrown, FaMapMarkerAlt, FaTags, FaCalendarAlt, FaAlignLeft, FaGlobe, FaPencilAlt, FaArrowRight } from "react-icons/fa";
 import { Modal, Button, Container, Row, Col, FormControl, FormGroup, FormLabel } from "react-bootstrap";
 import { DatePicker, Multiselect } from 'react-widgets/cjs';
 import LoadingContainer from '../LoadingContainer/LoadingContainer';
@@ -95,7 +95,7 @@ const UpdateEventModal: FC<IUpdateEventModalProps> = (props) => {
   return (
     <Modal className='event-update-modal' show={props.show} onHide={props.onCancel}>
       <Modal.Header>
-        <Modal.Title className='ms-3'><FaFire size="20px" className='me-2 mb-2' />Edit event</Modal.Title>
+        <Modal.Title className='ms-3'><FaCrown size="24px" className='me-2 mb-2' />Edit event</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {props.isLoading ? <div className='pt-5'><LoadingContainer /></div> :

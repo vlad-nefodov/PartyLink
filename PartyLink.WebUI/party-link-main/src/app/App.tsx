@@ -7,13 +7,14 @@ import LoginPage from '../pages/LoginPage/LoginPage'
 import SignupPage from '../pages/SignupPage/SignupPage'
 import MapPage from '../pages/MapPage/MapPage'
 import SettingsPage from '../pages/SettingsPage/SettingsPage'
+import ProfilePage from '../pages/ProfilePage/ProfilePage'
 
 function App() {
   return (
     <Routes>
       <Route path="/*" element={<AuthLayout />}>
         <Route index element={<MapPage />} />
-        <Route path="profile/:id" element={<div>Profile</div>} />
+        <Route path="profile/:id" element={<ProfilePage />} />
         <Route path="event/:id" element={<div>Event</div>} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>

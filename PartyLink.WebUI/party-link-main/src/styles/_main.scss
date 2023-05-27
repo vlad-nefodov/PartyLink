@@ -51,6 +51,23 @@ body,
   border-radius: 1px;
 }
 
+$sandwiched-page-bg-h: 140px;
+
+.sandwiched-page-background {
+  height: 140px;
+  background-color: #F7F8FA;
+}
+
+.sandwiched-page {
+  background-color: #FFFFFF;
+  height: calc(100% - 140px);
+}
+
+.sandwiched-page-overflow-container {
+  position: relative;
+  width: 100%;
+}
+
 .btn-danger {
   --bs-btn-color: #fff;
   --bs-btn-bg: #F04D5D;

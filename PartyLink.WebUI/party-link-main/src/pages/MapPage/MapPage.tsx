@@ -78,7 +78,7 @@ function MapPage() {
       case ShowEvents.Community:
         filteredEvents = filteredEvents?.filter(e => e.ownerUser.id !== user?.id);
         break;
-      case ShowEvents.Owned:
+      case ShowEvents.Hosting:
         filteredEvents = filteredEvents?.filter(e => e.ownerUser.id === user?.id);
         break;
     }
@@ -229,7 +229,7 @@ function MapPage() {
         onSearch={onSearchHandle} />
       <EventMap
         events={events}
-        isLoading={!isLoaded && isEventsLoading}
+        isLoading={!isLoaded || isEventsLoading}
         center={mapCenter}
         zoom={mapZoom}
         onCreateEvent={onCreateEventHandle}

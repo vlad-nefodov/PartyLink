@@ -1,0 +1,27 @@
+.events-list {
+  padding: 20px 40px 10px 40px;
+  border-radius: 20px;
+  background-color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  min-width: 400px;
+}
+
+.profile-page-container {
+  height: 100%;
+  background-color: #ffffff;
+  overflow-y: auto;
+}
+
+.sandwiched-profile-page-container {
+  position: absolute;
+  padding-left: 4vw;
+  padding-right: 6vw;
+  padding-bottom: 4vh;
+  min-width: calc(400px + 10vw);
+  top: -80px;
+}
+
+.profile-avatar {
+  height: 120px;
+  width: 120px;
+}
