@@ -29,9 +29,9 @@ const ProfilePage = () => {
   return (
     <div className='profile-page-container'>
       <div className='sandwiched-page-background' />
-      <div className='sandwiched-page'>
+      <Container className='sandwiched-page'>
         <Container className='sandwiched-page-overflow-container'>
-          <div className='sandwiched-profile-page-container'>
+          <Container className='sandwiched-profile-page-container'>
             <Row className='align-items-center'>
               <Col xs="auto">
                 <div className='profile-avatar'>
@@ -65,9 +65,9 @@ const ProfilePage = () => {
                 </div>
               </Col>
             </Row>
-          </div>
+          </Container>
         </Container>
-      </div>
+      </Container>
     </div>
   );
 }

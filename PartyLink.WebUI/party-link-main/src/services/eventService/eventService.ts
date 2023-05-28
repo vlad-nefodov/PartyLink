@@ -40,8 +40,20 @@ export interface IEventUserRole {
 export interface IEventResponse {
   id: string,
   ownerUser: IEventUserResponse,
-  usersRoles: IEventUserRole[]
+  usersRoles: IEventUserRole[],
   participantsCount: number,
+  title: string,
+  description: string,
+  startsAt: Date,
+  endsAt: Date,
+  location: IEventLocation,
+  tags: IEventTag[]
+}
+
+export interface IFullEventResponse {
+  id: string,
+  ownerUser: IEventUserResponse,
+  participants: IEventUserResponse[],
   title: string,
   description: string,
   startsAt: Date,
@@ -82,6 +94,10 @@ const getLocalDate = (date: Date) => {
 export const eventService = {
   getAll: async () => {
     const response = await api.get<IEventResponse[]>("/api/event");
+    return response.data;
+  },
+  getById: async (id: string) => {
+    const response = await api.get<IFullEventResponse>(`/api/event/${id}`);
     return response.data;
   },
   create: async (data: ICreateEventData) => {

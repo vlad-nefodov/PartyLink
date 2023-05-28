@@ -2,6 +2,7 @@
 
 public class GetEventByIdResultModel
 {
+    public Guid Id { get; set; }
     public EventUserResultModel OwnerUser { get; set; } = null!;
     public IEnumerable<EventUserResultModel> Participants { get; set; } = new List<EventUserResultModel>();
 

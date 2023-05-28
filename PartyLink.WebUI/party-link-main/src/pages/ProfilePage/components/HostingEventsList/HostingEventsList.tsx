@@ -27,7 +27,7 @@ const HostingEventsList: FC<IHostingEventsListProps> = ({ userId, events }) => {
         hostingEvents?.length
           ?
           <div className='pb-2 flex-grow-1 hosting-list pe-2'>
-            {hostingEvents.map(e => <HostingEventsListItem event={e} />)}
+            {hostingEvents.map(e => <HostingEventsListItem key={e.id} event={e} />)}
           </div>
           :
           <div className="pt-2 pb-3 d-flex justify-content-center align-items-center">

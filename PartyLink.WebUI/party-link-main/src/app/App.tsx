@@ -8,6 +8,7 @@ import SignupPage from '../pages/SignupPage/SignupPage'
 import MapPage from '../pages/MapPage/MapPage'
 import SettingsPage from '../pages/SettingsPage/SettingsPage'
 import ProfilePage from '../pages/ProfilePage/ProfilePage'
+import EventPage from '../pages/EventPage/EventPage'
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Route path="/*" element={<AuthLayout />}>
         <Route index element={<MapPage />} />
         <Route path="profile/:id" element={<ProfilePage />} />
-        <Route path="event/:id" element={<div>Event</div>} />
+        <Route path="event/:id" element={<EventPage />} />
         <Route path="settings" element={<SettingsPage />} />
       </Route>
       <Route path="/*" element={<Layout />}>

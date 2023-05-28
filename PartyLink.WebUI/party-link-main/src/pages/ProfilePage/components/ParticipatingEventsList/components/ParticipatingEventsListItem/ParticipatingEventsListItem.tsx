@@ -12,7 +12,7 @@ const ParticipatingEventsListItem: FC<IParticipatingEventsListItemProps> = ({ ev
   const navigate = useNavigate();
   return (
     <div className='participating-events-list-item d-flex align-items-center justify-content-between' onClick={() => navigate(`/event/${event.id}`)}>
-      <h5 className='m-0'>{event.title}</h5>
+      <h5 className='m-0 text-truncate'>{event.title}</h5>
       <div className='d-flex justify-content-center align-items-center'>
         <FaUserFriends className='me-1 mt-1' size="20px" />
         <h6 className='m-0'>{event.participantsCount}</h6>

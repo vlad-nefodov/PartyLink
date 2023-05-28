@@ -27,7 +27,7 @@ const VisitedEventsList: FC<IVisitedEventsListProps> = ({ userId, events }) => {
         visitedEvents?.length
           ?
           <div className='pb-2 flex-grow-1 visited-list pe-2'>
-            {visitedEvents.map(e => <VisitedEventsListItem isOwner={e.ownerUser.id === userId} event={e} />)}
+            {visitedEvents.map(e => <VisitedEventsListItem key={e.id} isOwner={e.ownerUser.id === userId} event={e} />)}
           </div>
           :
           <div className="pt-2 pb-3 d-flex justify-content-center align-items-center">

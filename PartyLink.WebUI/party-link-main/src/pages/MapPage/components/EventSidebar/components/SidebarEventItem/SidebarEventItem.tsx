@@ -68,7 +68,7 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
     props.onViewClick(props.event)
   }
 
-  const getPrimaryButton = () => {
+  const EventButton = () => {
     if (props.isLoading) {
       return (
         <div className="d-flex justify-content-center align-items-center" style={{ minWidth: 'BUTTON_WIDTH', minHeight: 'BUTTON_HEIGHT' }}>
@@ -92,13 +92,12 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
             </Button>
           );
         }
-        else {
-          return (
-            <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={onJoinClickHandle}>
-              <HiPlus className='me-1' size="16px" />Join
-            </Button>
-          );
-        }
+      default:
+        return (
+          <Button variant="danger" className='ps-2 pe-2 d-flex align-items-center' size='sm' onClick={onJoinClickHandle}>
+            <HiPlus className='me-1' size="16px" />Join
+          </Button>
+        );
     }
   }
 
@@ -130,7 +129,7 @@ const SidebarEventItem: FC<ISidebarEventItemProps> = (props) => {
             <Row className='mb-2'>
               <Col xs={12}>
                 <div className='d-grid'>
-                  {getPrimaryButton()}
+                  <EventButton />
                 </div>
               </Col>
             </Row>

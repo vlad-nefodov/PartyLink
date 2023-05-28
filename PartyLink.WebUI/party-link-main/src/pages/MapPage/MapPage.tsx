@@ -17,7 +17,10 @@ function MapPage() {
     googleMapsApiKey: import.meta.env.VITE_PUBLIC_MAP_API_KEY
   });
   const queryClient = useQueryClient();
-  const { data: eventsData, isLoading: isEventsLoading } = useQuery("getAllEvents", eventService.getAll);
+  const {
+    data: eventsData,
+    isLoading: isEventsLoading
+  } = useQuery("getAllEvents", eventService.getAll);
 
   const showSuccess = (message: string) => {
     toast.success(message);
@@ -186,6 +189,7 @@ function MapPage() {
       tags: data.tags.map(t => ({ title: t.val }))
     }, {
       onSuccess: () => {
+        queryClient.refetchQueries('getEventById');
         setEventToUpdate(undefined);
         showSuccess(`${data.title.val} was updated!`);
       }

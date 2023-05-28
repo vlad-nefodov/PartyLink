@@ -27,7 +27,7 @@ const ParticipatingEventsList: FC<IParticipatingEventsListProps> = ({ userId, ev
         participatingEvents?.length
           ?
           <div className='pb-2 flex-grow-1 participating-list pe-2'>
-            {participatingEvents.map(e => <ParticipatingEventsListItem event={e} />)}
+            {participatingEvents.map(e => <ParticipatingEventsListItem key={e.id} event={e} />)}
           </div>
           :
           <div className="pt-2 pb-3 d-flex justify-content-center align-items-center">
