@@ -165,6 +165,7 @@ function MapPage() {
       tags: data.tags.map(t => ({ title: t.val }))
     }, {
       onSuccess: () => {
+        queryClient.refetchQueries('getAllEvents');
         setCreateEventLocation(undefined);
         showSuccess(`${data.title.val} was created!`);
       }
@@ -203,6 +204,7 @@ function MapPage() {
   const onDeleteEventModalUpdateHandle = (data: IEventResponse) => {
     deleteEventMutation(data.id, {
       onSuccess: () => {
+        queryClient.refetchQueries('getAllEvents');
         setEventToUpdate(undefined);
         showSuccess(`${data.title} was deleted!`);
       }
