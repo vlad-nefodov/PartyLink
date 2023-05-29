@@ -16,7 +16,7 @@ const HostingEventsList: FC<IHostingEventsListProps> = ({ userId, events }) => {
   );
 
   return (
-    <div className='d-flex flex-column'>
+    <div className='d-flex flex-column h-100'>
       <div className="d-flex align-items-center">
         <FaCrown className="me-1" size="16px" color="#FFC61C" />
         <h4 className="mb-0 me-2">Hosting</h4>
@@ -30,7 +30,7 @@ const HostingEventsList: FC<IHostingEventsListProps> = ({ userId, events }) => {
             {hostingEvents.map(e => <HostingEventsListItem key={e.id} event={e} />)}
           </div>
           :
-          <div className="pt-2 pb-3 d-flex justify-content-center align-items-center">
+          <div className="pt-2 pb-4 d-flex flex-grow-1 justify-content-center align-items-center">
             <FaRegSadTear className='me-2' size="24px" />It's empty
           </div>
       }

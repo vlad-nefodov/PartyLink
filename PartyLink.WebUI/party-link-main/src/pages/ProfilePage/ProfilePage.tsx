@@ -48,13 +48,13 @@ const ProfilePage = () => {
                 <h1 className='mb-4'>{`${userData?.name} ${userData?.surname}`}</h1>
               </Col>
             </Row>
-            <Row className='justify-content-center'>
-              <Col className='mt-4'>
+            <Row className='justify-content-center align-items-stretch'>
+              <Col className='mt-4 d-flex'>
                 <div className='events-list'>
                   <ParticipatingEventsList userId={id} events={eventsData} />
                 </div>
               </Col>
-              <Col className='mt-4'>
+              <Col className='mt-4 d-flex'>
                 <div className='events-list'>
                   <HostingEventsList userId={id} events={eventsData} />
                 </div>
